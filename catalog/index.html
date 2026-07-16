@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodePath Course Catalog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B1C57;
+    --navy-med: #062F54;
+    --green: #00C385;
+    --ink: #2b2d55;
+    --muted: #6b6f8a;
+    --line: #e6e8f0;
+    --bg: #ffffff;
+    --font-head: 'Space Mono', ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace;
+    --font-body: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.45;
+    font-size: 15px;
+  }
+
+  .topbar { height: 5px; background: var(--green); }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 28px 56px;
+  }
+
+  header { margin-bottom: 8px; }
+
+  .wordmark {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin: 0 0 14px;
+  }
+
+  h1 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 1.15;
+    color: var(--navy);
+    margin: 0 0 12px;
+  }
+
+  .intro {
+    max-width: 68ch;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+
+  .updated-note {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+
+  .pathway { margin-top: 40px; }
+
+  .pathway h2 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--navy);
+    margin: 0;
+    padding-left: 14px;
+    border-left: 5px solid var(--green);
+  }
+
+  .sequence {
+    font-family: var(--font-head);
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 6px 0 0 19px;
+    text-transform: uppercase;
+  }
+
+  .pathway-note {
+    margin: 8px 0 0 19px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .course-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .course {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 18px 16px;
+    background: #fff;
+  }
+
+  .course .code {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin: 0 0 4px;
+  }
+
+  .course h3 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 15.5px;
+    line-height: 1.25;
+    color: var(--navy);
+    margin: 0 0 8px;
+  }
+
+  .course .liner {
+    color: var(--ink);
+    font-size: 14px;
+    margin: 0 0 12px;
+  }
+
+  .course .meta {
+    font-size: 13px;
+    color: #3a3c63;
+    margin: 0 0 6px;
+  }
+
+  .course .meta:last-child { margin-bottom: 0; }
+
+  .course .meta .label {
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  footer {
+    margin-top: 44px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 680px) {
+    .course-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 25px; }
+  }
+
+  @media print {
+    .topbar { height: 5px; }
+    .container { max-width: 100%; padding: 0 12mm 12mm; }
+    .course, .pathway { break-inside: avoid; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+  <div class="topbar"></div>
+  <div class="container">
+    <header>
+      <p class="wordmark">CodePath</p>
+      <h1>Course Catalog</h1>
+      <p class="intro">CodePath courses are delivered directly to students over 10 weeks. No textbook purchases are required, and a free GitHub account is needed for every course. Courses are organized into skill pathways; within each pathway, courses build in sequence.</p>
+      <p class="updated-note">Last updated: July 16, 2026</p>
+    </header>
+
+    <section class="pathway">
+      <h2>AI Engineering</h2>
+      <p class="sequence">AI110 &rarr; AI201 &rarr; AI301</p>
+      <div class="course-grid">
+        <article class="course">
+          <p class="code">AI110</p>
+          <h3>Foundations of AI Engineering</h3>
+          <p class="liner">Sharpen your CS fundamentals and learn to code, debug, and think with AI the way engineers actually work today.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> At least one foundational programming course (Intro to CS or equivalent), or demonstrated proficiency in Python or Java.</p>
+          <p class="meta"><span class="label">Key skills:</span> Applying data structures, algorithms, and OOP in AI-assisted workflows; using AI tools for coding and debugging; exercising critical oversight of AI output; building and presenting an application with responsible AI integration.</p>
+        </article>
+        <article class="course">
+          <p class="code">AI201</p>
+          <h3>Applications of AI Engineering</h3>
+          <p class="liner">Build the AI features engineers are shipping right now (RAG systems, agents, fine-tuned models) while developing real skills for navigating complex codebases.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> AI110, or comfort using AI tools for development plus intermediate programming knowledge (data structures, algorithms, OOP).</p>
+          <p class="meta"><span class="label">Key skills:</span> Building production-grade AI features (RAG, multi-tool agents, fine-tuned models, and safety guardrails); working effectively in large, unfamiliar codebases; contributing to open source.</p>
+        </article>
+        <article class="course">
+          <p class="code">AI301</p>
+          <h3>AI Open Source Capstone</h3>
+          <p class="liner">Make real contributions to live open source software: find the issue, build the fix, and get it reviewed by actual maintainers.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> AI201, or strong programming foundations, the ability to work in complex codebases, proficiency using AI assistants across full application development, and familiarity with Git and collaborative development workflows.</p>
+          <p class="meta"><span class="label">Key skills:</span> Contributing to live production open source; collaborating with project maintainers; producing publicly visible contributions that signal job readiness.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="pathway">
+      <h2>Technical Interview Prep</h2>
+      <p class="sequence">TIP101 &rarr; TIP102 &rarr; TIP103</p>
+      <p class="pathway-note">Adaptive learning model that customizes pacing to the student. All courses use Python.</p>
+      <div class="course-grid">
+        <article class="course">
+          <p class="code">TIP101</p>
+          <h3>Intro to Technical Interview Prep</h3>
+          <p class="liner">Build core problem-solving for technical interviews through Python challenges and foundational data structures.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> Introductory OOP programming (loops, conditionals, arrays, data types, functions).</p>
+          <p class="meta"><span class="label">Key skills:</span> The technical interview process; the UMPIRE problem-solving strategy; basic data structures and algorithmic techniques.</p>
+        </article>
+        <article class="course">
+          <p class="code">TIP102</p>
+          <h3>Intermediate Technical Interview Prep</h3>
+          <p class="liner">Advance your interview preparation with Python challenges spanning data structures and recursion.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> Introductory OOP programming; comfort with lists and dictionaries.</p>
+          <p class="meta"><span class="label">Key skills:</span> UMPIRE fluency; internship-level interview readiness (easy-to-medium difficulty); problem-solving with lists, dictionaries, and recursion.</p>
+        </article>
+        <article class="course">
+          <p class="code">TIP103</p>
+          <h3>Advanced Technical Interview Prep</h3>
+          <p class="liner">Master advanced algorithmic problem-solving for upper-level internship and entry-level software engineering interviews.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> Introductory OOP programming; comfort solving problems with data structures (lists, dictionaries, linked lists, trees) and common algorithms.</p>
+          <p class="meta"><span class="label">Key skills:</span> Advanced algorithmic techniques via UMPIRE; AI-assisted debugging and research habits.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="pathway">
+      <h2>Web Development</h2>
+      <p class="sequence">WEB101 &rarr; WEB102 &rarr; WEB103</p>
+      <div class="course-grid">
+        <article class="course">
+          <p class="code">WEB101</p>
+          <h3>Intro to Web Development</h3>
+          <p class="liner">Learn web development hands-on through HTML, CSS, and JavaScript projects, with no prior experience required.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> None. Open to all majors and backgrounds.</p>
+          <p class="meta"><span class="label">Key skills:</span> Semantic HTML; CSS including Flexbox; JavaScript fundamentals; DOM manipulation; building interactive web pages.</p>
+        </article>
+        <article class="course">
+          <p class="code">WEB102</p>
+          <h3>Intermediate Web Development</h3>
+          <p class="liner">Expand into full-stack territory with React, APIs, and databases.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> WEB101 or equivalent, or introductory programming plus introductory web development experience.</p>
+          <p class="meta"><span class="label">Key skills:</span> React; API integration; multi-page apps with React Router; CRUD operations; full-stack deployment.</p>
+        </article>
+        <article class="course">
+          <p class="code">WEB103</p>
+          <h3>Advanced Web Development</h3>
+          <p class="liner">Build and deploy scalable full-stack applications with React and modern frameworks, ready for professional roles.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> Intermediate web development experience or equivalent; familiarity with JavaScript and JSX; intermediate OOP or data structures.</p>
+          <p class="meta"><span class="label">Key skills:</span> Building servers, database schemas, and APIs; authentication; advanced React with routing; scalable full-stack deployment.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="pathway">
+      <h2>Cybersecurity</h2>
+      <p class="sequence">CYB101 &rarr; CYB102</p>
+      <div class="course-grid">
+        <article class="course">
+          <p class="code">CYB101</p>
+          <h3>Intro to Cybersecurity</h3>
+          <p class="liner">Explore cybersecurity fundamentals through hands-on projects and real-world tools, and make informed decisions about a security career.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> None. Open to all students.</p>
+          <p class="meta"><span class="label">Key skills:</span> Identifying attacks and mitigations; using real-world cybersecurity tools; understanding core security concepts; presenting a cybersecurity project.</p>
+        </article>
+        <article class="course">
+          <p class="code">CYB102</p>
+          <h3>Intermediate Cybersecurity</h3>
+          <p class="liner">Learn blue-team defense using threat intelligence platforms and SIEM systems to detect, analyze, and respond to threats.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> Introductory knowledge of programming and computing, plus Linux terminal basics.</p>
+          <p class="meta"><span class="label">Key skills:</span> Analyzing threat data on TI platforms; collecting endpoint data with SIEM; correlating and triaging events; incident management.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="pathway">
+      <h2>Android Development</h2>
+      <p class="sequence">AND101 &rarr; AND102</p>
+      <div class="course-grid">
+        <article class="course">
+          <p class="code">AND101</p>
+          <h3>Intro to Android Development</h3>
+          <p class="liner">Build functional single-screen Android apps in Kotlin using Android Studio.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> Introductory OOP programming (C++, Java, or other) and basic OOP concepts.</p>
+          <p class="meta"><span class="label">Key skills:</span> Kotlin and XML layouts; custom UI design; interactive functionality; debugging with AI assistance and Android Studio tools.</p>
+        </article>
+        <article class="course">
+          <p class="code">AND102</p>
+          <h3>Intermediate Android Development</h3>
+          <p class="liner">Build multi-screen Android apps that integrate APIs, local databases, and responsive design.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> AND101 or equivalent Android development experience.</p>
+          <p class="meta"><span class="label">Key skills:</span> Fragments, intents, and navigation; local data persistence with CRUD; external API integration; adaptive layouts and RecyclerView.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="pathway">
+      <h2>iOS Development</h2>
+      <p class="sequence">IOS101 &rarr; IOS102</p>
+      <div class="course-grid">
+        <article class="course">
+          <p class="code">IOS101</p>
+          <h3>Intro to iOS Development</h3>
+          <p class="liner">Build functional single-screen iOS apps in Swift and Xcode using UIKit.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> Introductory OOP programming and basic OOP concepts. macOS and Xcode required.</p>
+          <p class="meta"><span class="label">Key skills:</span> Swift and UIKit; custom UI design; interactive elements (buttons, text and image views, table views, network requests); debugging with AI assistance and Xcode tools.</p>
+        </article>
+        <article class="course">
+          <p class="code">IOS102</p>
+          <h3>Intermediate iOS Development</h3>
+          <p class="liner">Build multi-screen iOS apps with UIKit and SwiftUI, integrating APIs, local databases, and Firebase.</p>
+          <p class="meta"><span class="label">Prerequisites:</span> IOS101 or equivalent iOS development experience. macOS and Xcode required.</p>
+          <p class="meta"><span class="label">Key skills:</span> Multi-screen apps with UIKit and SwiftUI; local persistence (UserDefaults, Parse/Back4App, Firebase); external API integration; adaptive UIs.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      CodePath Course Catalog. Direct-to-Student courses. Summaries derived from approved course descriptions and syllabi.
+    </footer>
+  </div>
+</body>
+</html>
