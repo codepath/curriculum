@@ -141,6 +141,8 @@
   .cl-b.loc{background:var(--code-bg);color:var(--muted);text-transform:none;letter-spacing:0;font-weight:600}
   .cl-b.cat{background:transparent;border:1px solid var(--line);color:var(--body)}
   .cl-b.coming{background:var(--amber-bg);color:var(--amber-ink);border:1px solid var(--amber-line)}
+  .cl-b.surf-slides{background:#f0e4ff;color:#7c3aed}
+  .cl-b.surf-edstem{background:#d7efec;color:#0f766e}
   .cl-x{font-size:15px;line-height:1.55;color:var(--body)}
   .cl-x code{font-family:var(--mono);font-size:.85em;background:var(--code-bg);padding:1.5px 5px;border-radius:4px;color:var(--ink)}
 
@@ -469,7 +471,7 @@
         <button class="cl-chip" data-g="cat" data-v="clarity">Clarity &amp; examples</button>
         <button class="cl-chip" data-g="cat" data-v="lbd">Learn-by-doing</button>
         <button class="cl-chip" data-g="cat" data-v="java">Java idioms</button>
-        <button class="cl-chip" data-g="cat" data-v="edstem">EdStem / decks</button>
+        <button class="cl-chip" data-g="cat" data-v="edstem">Decks &amp; setup</button>
         <button class="cl-chip" data-g="cat" data-v="deferred">Deferred</button>
       </div>
       <div class="cl-group"><span class="cl-glabel">Status</span>
@@ -567,7 +569,7 @@
       clarity:['Clarity & examples','#4f5dff'],
       lbd:['Learn-by-doing','#02bcff'],
       java:['Java idioms','#b243ff'],
-      edstem:['EdStem / decks','#6b6d85'],
+      edstem:['Decks & setup','#6b6d85'],
       deferred:['Deferred','#b45309']
     };
     var TRACK={py:'Python',java:'Java'};
@@ -577,17 +579,17 @@
       {t:'py',u:1,m:'M1',c:'clarity',x:`Defined the term "argument" inline before the Module 1 activity first uses it.`},
       {t:'py',u:1,m:'M1',c:'clarity',x:`Co-located each scenario with its question in the Lesson 2 activity.`},
       {t:'py',u:1,m:'M1',c:'correctness',x:`Corrected a lab Parsons problem's expected output (a missing blank line), and fixed a "cantaloupe" misspelling.`},
-      {t:'py',u:1,m:'M2',c:'autograder',x:`Changed the modify/write test harness so it compares output correctly and no longer fails student code over newline handling.`},
-      {t:'py',u:1,m:'M2',c:'autograder',x:`Loosened an activity test to accept an f-string written with either single or double quotes.`},
-      {t:'py',u:1,m:'M2',c:'clarity',x:`Added two lecture slides: "assignment versus equality" and "program tracing."`},
+      {t:'py',u:1,m:'M2',c:'autograder',surf:'edstem',x:`Changed the modify/write test harness so it compares output correctly and no longer fails student code over newline handling.`},
+      {t:'py',u:1,m:'M2',c:'autograder',surf:'edstem',x:`Loosened an activity test to accept an f-string written with either single or double quotes.`},
+      {t:'py',u:1,m:'M2',c:'clarity',surf:'slides',x:`Added two lecture slides: "assignment versus equality" and "program tracing."`},
       {t:'py',u:1,m:'M2',c:'clarity',x:`Added an operator-precedence (PEMDAS) explanation to a precedence question.`},
       {t:'py',u:1,m:'M2',c:'clarity',x:`Improved two type-conversion examples: introduce integer-versus-float behavior without an operator taught later, plus a clearer integer-to-boolean example.`},
       {t:'py',u:1,m:'M2',c:'clarity',x:`Replaced an activity Explore preamble with a clearer version tying functions, methods, and expressions to return values, and corrected a factual error.`},
       {t:'py',u:1,m:'M2',c:'correctness',x:`Fixed a broken type-conversion example, stated a previously hidden f-string requirement, and corrected a wrong word in an activity code block.`},
       {t:'py',u:1,m:'M2',c:'correctness',x:`Corrected displayed output across lab and homework exercises so typed input appears on the same line as its prompt, and fixed spelling/pluralization (e.g. "bag(s) of coffee").`},
-      {t:'py',u:1,m:'M3',c:'autograder',x:`Changed a lab test harness that stripped <code>print</code> statements and caused correct conditionals to read as errors; fixed once at the harness level (most Module 3 labs).`},
-      {t:'py',u:1,m:'M3',c:'autograder',x:`Rebalanced point spreads on a homework and two lab exercises, and applied input mocking to a Write Code lab.`},
-      {t:'py',u:1,m:'M3',c:'clarity',x:`Removed references to Lists from a lecture before Lists are taught, converting those examples to string checks.`},
+      {t:'py',u:1,m:'M3',c:'autograder',surf:'edstem',x:`Changed a lab test harness that stripped <code>print</code> statements and caused correct conditionals to read as errors; fixed once at the harness level (most Module 3 labs).`},
+      {t:'py',u:1,m:'M3',c:'autograder',surf:'edstem',x:`Rebalanced point spreads on a homework and two lab exercises, and applied input mocking to a Write Code lab.`},
+      {t:'py',u:1,m:'M3',c:'clarity',surf:'slides',x:`Removed references to Lists from a lecture before Lists are taught, converting those examples to string checks.`},
       {t:'py',u:1,m:'M3',c:'clarity',x:`Rewrote several dense prompts into plain, bulleted tasks (restaurant-meal, favorite-cities, race/place-points, pizza-slices, letter-grade, potions).`},
       {t:'py',u:1,m:'M3',c:'clarity',x:`Rewrote the if- and else-statement Explore examples, added a worked example, and simplified convoluted change-instructions.`},
       {t:'py',u:1,m:'M3',c:'clarity',x:`Added a runtime-exception worked example (a <code>ValueError</code>) with a debugged version, and a beginner debugger introduction.`},
@@ -607,16 +609,16 @@
       {t:'java',u:1,m:'M1',c:'clarity',x:`Defined the term "argument" inline before first use, with a supporting slide.`},
       {t:'java',u:1,m:'M1',c:'clarity',x:`Co-located each scenario with its question in the Lesson 2 activity.`},
       {t:'java',u:1,m:'M1',c:'correctness',x:`Corrected a lab Parsons problem's expected output and fixed a "cantaloupe" misspelling.`},
-      {t:'java',u:1,m:'M1',c:'java',x:`Corrected the "Song: Blue in Green" slide to use a valid, properly escaped Java string, and cleaned up comment and escape-sequence syntax.`},
-      {t:'java',u:1,m:'M2',c:'autograder',x:`Fixed the homework/lab test harness so it normalizes newline differences and no longer fails correct code over whitespace.`},
-      {t:'java',u:1,m:'M2',c:'clarity',x:`Added two lecture slides: "assignment versus equality" (<code>=</code> vs <code>==</code>, a common beginner error) and "program tracing."`},
+      {t:'java',u:1,m:'M1',c:'java',surf:'slides',x:`Corrected the "Song: Blue in Green" slide to use a valid, properly escaped Java string, and cleaned up comment and escape-sequence syntax.`},
+      {t:'java',u:1,m:'M2',c:'autograder',surf:'edstem',x:`Fixed the homework/lab test harness so it normalizes newline differences and no longer fails correct code over whitespace.`},
+      {t:'java',u:1,m:'M2',c:'clarity',surf:'slides',x:`Added two lecture slides: "assignment versus equality" (<code>=</code> vs <code>==</code>, a common beginner error) and "program tracing."`},
       {t:'java',u:1,m:'M2',c:'clarity',x:`Added an operator-precedence (PEMDAS) reference to the precedence question.`},
       {t:'java',u:1,m:'M2',c:'clarity',x:`Improved type-conversion material: an int-versus-float example now uses an explicit <code>(int)</code> cast, and an <code>isOpen</code> example shows int-to-boolean.`},
       {t:'java',u:1,m:'M2',c:'clarity',x:`Replaced the return-values activity preamble with a clearer version, and fixed typos.`},
       {t:'java',u:1,m:'M2',c:'clarity',x:`Added a clarifying warning to the Lab Write Code 3 exercise (store the day count directly; don't read it with <code>Scanner</code>).`},
-      {t:'java',u:1,m:'M3',c:'autograder',x:`Fixed the lab test harness that stripped print statements: it now compiles the student's program once and checks real output (most Module 3 labs).`},
-      {t:'java',u:1,m:'M3',c:'autograder',x:`Rebalanced point spreads on a homework and a lab Modify Code exercise, and rebuilt the border-states lab test to use input mocking.`},
-      {t:'java',u:1,m:'M3',c:'clarity',x:`Removed premature references to collections from the relational/logical-operator lecture; arrays and <code>.contains()</code> appear only later.`},
+      {t:'java',u:1,m:'M3',c:'autograder',surf:'edstem',x:`Fixed the lab test harness that stripped print statements: it now compiles the student's program once and checks real output (most Module 3 labs).`},
+      {t:'java',u:1,m:'M3',c:'autograder',surf:'edstem',x:`Rebalanced point spreads on a homework and a lab Modify Code exercise, and rebuilt the border-states lab test to use input mocking.`},
+      {t:'java',u:1,m:'M3',c:'clarity',surf:'slides',x:`Removed premature references to collections from the relational/logical-operator lecture; arrays and <code>.contains()</code> appear only later.`},
       {t:'java',u:1,m:'M3',c:'clarity',x:`Rewrote several dense prompts into plain, bulleted tasks (<code>PizzaParty</code>, <code>GradeConverter</code>, <code>PotionGame</code>, and others).`},
       {t:'java',u:1,m:'M3',c:'clarity',x:`Rewrote the if-statement Explore text to match the code, replaced the else example with a clearer speed example, and added a worked <code>&amp;&amp;</code> walkthrough.`},
       {t:'java',u:1,m:'M3',c:'clarity',x:`Added a runtime-exception example (parsing <code>"three"</code> with <code>Integer.parseInt</code> for a <code>NumberFormatException</code>) with a debugged version and a "Swamp of Distraction" debugger challenge.`},
@@ -632,16 +634,16 @@
       {t:'java',u:2,m:'M1',c:'correctness',x:`Fixed the temperature-conversion debug homework so an invalid unit is handled gracefully (returns <code>null</code>, caller guards output).`},
       {t:'java',u:2,m:'M1',c:'correctness',x:`Fixed a "decompose problems" activity example whose methods were incorrectly <code>static</code>, so it now compiles; methods are instance methods and state is stored correctly.`},
       {t:'java',u:2,m:'M1',c:'clarity',x:`Reworded "create a diagram" instructions to ask for the text-based method decomposition the lesson teaches.`},
-      {t:'java',u:3,m:'—',c:'edstem',x:`No content edits. The nested-HashMaps lecture deck is now correctly embedded; EdStem housekeeping (removing an empty duplicate stub, retitling Python-era lesson names) is in progress.`},
-      {t:'java',u:4,m:'M1-2',c:'correctness',x:`Fixed broken code in the text-files lecture (4.1.1): the averaging example compiles and the error-handling message matches its output.`},
-      {t:'java',u:4,m:'M1-2',c:'correctness',x:`Fixed broken code in the CSV lecture (4.1.2): sample rows and map use Java-idiomatic formatting.`},
-      {t:'java',u:4,m:'M1-2',c:'correctness',x:`Fixed broken code in the data-analysis (4.2.1) and Kaggle-dataset (4.2.2) lectures: consistent names and matching outputs.`},
+      {t:'java',u:3,m:'—',c:'edstem',surf:'edstem',x:`No content edits. The nested-HashMaps lecture deck is now correctly embedded; EdStem housekeeping (removing an empty duplicate stub, retitling Python-era lesson names) is in progress.`},
+      {t:'java',u:4,m:'M1-2',c:'correctness',surf:'slides',x:`Fixed broken code in the text-files lecture (4.1.1): the averaging example compiles and the error-handling message matches its output.`},
+      {t:'java',u:4,m:'M1-2',c:'correctness',surf:'slides',x:`Fixed broken code in the CSV lecture (4.1.2): sample rows and map use Java-idiomatic formatting.`},
+      {t:'java',u:4,m:'M1-2',c:'correctness',surf:'slides',x:`Fixed broken code in the data-analysis (4.2.1) and Kaggle-dataset (4.2.2) lectures: consistent names and matching outputs.`},
       {t:'java',u:4,m:'M1-2',c:'clarity',x:`Added point-of-use scaffolding for checked exceptions so <code>throws Exception</code> is briefly explained where it first appears.`},
-      {t:'java',u:4,m:'M3',c:'java',x:`Corrected the image-files lecture (4.3.1): replaced Python terminology with the real Java class name (<code>ImageIO</code>) and fixed the crop explanation for <code>getSubimage(x, y, width, height)</code>.`},
-      {t:'java',u:4,m:'M3',c:'edstem',x:`Pointed the EdStem image-files lessons at the correct decks and kept the module on its standard-library Java approach (helper-library modernization deferred).`},
-      {t:'java',u:4,m:'M3',c:'edstem',s:'coming',x:`<b>Landing by end of day today:</b> the Java <b>Unit 4.3 Lab and Homework (Image files)</b> are being built in EdStem now and will be in the v2 base by end of day. Re-import from the base to pull them once they land.`},
+      {t:'java',u:4,m:'M3',c:'java',surf:'slides',x:`Corrected the image-files lecture (4.3.1): replaced Python terminology with the real Java class name (<code>ImageIO</code>) and fixed the crop explanation for <code>getSubimage(x, y, width, height)</code>.`},
+      {t:'java',u:4,m:'M3',c:'edstem',surf:'edstem',x:`Pointed the EdStem image-files lessons at the correct decks and kept the module on its standard-library Java approach (helper-library modernization deferred).`},
+      {t:'java',u:4,m:'M3',c:'edstem',s:'coming',surf:'edstem',x:`<b>Landing by end of day today:</b> the Java <b>Unit 4.3 Lab and Homework (Image files)</b> are being built in EdStem now and will be in the v2 base by end of day. Re-import from the base to pull them once they land.`},
       {t:'java',u:4,m:'Capstone',c:'correctness',x:`Rewrote the Unit 4 capstone to match what the course teaches: imports the CSV with <code>BufferedReader</code>/<code>Scanner</code> and <code>split(",")</code> into a nested <code>ArrayList&lt;String[]&gt;</code>, removing external-library dependencies.`},
-      {t:'java',u:4,m:'Exams',c:'edstem',s:'coming',x:`<b>Landing by end of day today:</b> the <b>four Java unit exams</b> are being built in EdStem from the revised source curriculum and will be in the v2 base by end of day. Re-import from the base to pull them once they land.`},
+      {t:'java',u:4,m:'Exams',c:'edstem',s:'coming',surf:'edstem',x:`<b>Landing by end of day today:</b> the <b>four Java unit exams</b> are being built in EdStem from the revised source curriculum and will be in the v2 base by end of day. Re-import from the base to pull them once they land.`},
       {t:'java',u:4,m:'M3',c:'deferred',x:`Unit 4 image-module modernization deferred: a helper-library rework was set aside this cycle and the partial slides rolled back, so lecture, activity, lab, and homework stay aligned on the standard-library approach. Open to revisiting mid-semester.`},
       {t:'java',u:0,m:'All',c:'deferred',x:`Lab-and-Homework duplication (course-wide) deferred to next year's pass. Does not block the Java launch.`},
       {t:'java',u:1,m:'M4',c:'deferred',x:`Five Unit 1 Module 4 activity enhancements from the Python track were intentionally not mirrored into Java (discretionary parity, not launch-critical).`}
@@ -657,9 +659,10 @@
       d.style.setProperty('--catclr',CAT[it.c][1]);
       d.dataset.t=it.t; d.dataset.u=String(it.u); d.dataset.c=it.c; d.dataset.s=it.s||'live';
       var loc='Unit '+(it.u||'—')+((it.m && it.m!=='—')?' · '+it.m:'');
-      d.dataset.txt=(it.x+' '+loc+' '+CAT[it.c][0]+' '+TRACK[it.t]+' '+(it.s==='coming'?'landing today coming':'')).toLowerCase();
+      d.dataset.txt=(it.x+' '+loc+' '+CAT[it.c][0]+' '+TRACK[it.t]+' '+(it.surf||'')+' '+(it.s==='coming'?'landing today coming':'')).toLowerCase();
       var comingB=it.s==='coming'?'<span class="cl-b coming">Landing today</span>':'';
-      d.innerHTML='<div class="cl-badges"><span class="cl-b '+it.t+'">'+TRACK[it.t]+'</span><span class="cl-b loc">'+loc+'</span><span class="cl-b cat">'+CAT[it.c][0]+'</span>'+comingB+'</div><div class="cl-x">'+it.x+'</div>';
+      var surfB=it.surf?'<span class="cl-b surf-'+it.surf+'">'+(it.surf==='slides'?'Slides':'EdStem')+'</span>':'';
+      d.innerHTML='<div class="cl-badges"><span class="cl-b '+it.t+'">'+TRACK[it.t]+'</span><span class="cl-b loc">'+loc+'</span><span class="cl-b cat">'+CAT[it.c][0]+'</span>'+surfB+comingB+'</div><div class="cl-x">'+it.x+'</div>';
       listEl.appendChild(d);
     });
     var items=Array.prototype.slice.call(listEl.children);
