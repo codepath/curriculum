@@ -475,7 +475,7 @@
         <button class="cl-chip" data-g="cat" data-v="deferred">Deferred</button>
       </div>
       <div class="cl-group"><span class="cl-glabel">Status</span>
-        <button class="cl-chip coming-chip" data-g="status" data-v="coming">Landing today</button>
+        <button class="cl-chip coming-chip" data-g="status" data-v="coming">Landing soon</button>
       </div>
     </div>
   </div>
@@ -641,9 +641,9 @@
       {t:'java',u:4,m:'M1-2',c:'clarity',x:`Added point-of-use scaffolding for checked exceptions so <code>throws Exception</code> is briefly explained where it first appears.`},
       {t:'java',u:4,m:'M3',c:'java',surf:'slides',x:`Corrected the image-files lecture (4.3.1): replaced Python terminology with the real Java class name (<code>ImageIO</code>) and fixed the crop explanation for <code>getSubimage(x, y, width, height)</code>.`},
       {t:'java',u:4,m:'M3',c:'edstem',surf:'edstem',x:`Pointed the EdStem image-files lessons at the correct decks and kept the module on its standard-library Java approach (helper-library modernization deferred).`},
-      {t:'java',u:4,m:'M3',c:'edstem',s:'coming',surf:'edstem',x:`<b>Landing by end of day today:</b> the Java <b>Unit 4.3 Lab and Homework (Image files)</b> are being built in EdStem now and will be in the v2 base by end of day. Re-import from the base to pull them once they land.`},
+      {t:'java',u:4,m:'M3',c:'edstem',s:'coming',surf:'edstem',x:`<b>Landing soon:</b> the Java <b>Unit 4.3 Lab and Homework (Image files)</b> are being built in EdStem now and will be in the v2 base soon. Re-import from the base to pull them once they land.`},
       {t:'java',u:4,m:'Capstone',c:'correctness',x:`Rewrote the Unit 4 capstone to match what the course teaches: imports the CSV with <code>BufferedReader</code>/<code>Scanner</code> and <code>split(",")</code> into a nested <code>ArrayList&lt;String[]&gt;</code>, removing external-library dependencies.`},
-      {t:'java',u:4,m:'Exams',c:'edstem',s:'coming',surf:'edstem',x:`<b>Landing by end of day today:</b> the <b>four Java unit exams</b> are being built in EdStem from the revised source curriculum and will be in the v2 base by end of day. Re-import from the base to pull them once they land.`},
+      {t:'java',u:4,m:'Exams',c:'edstem',s:'coming',surf:'edstem',x:`<b>Landing soon:</b> the <b>four Java unit exams</b> are being built in EdStem from the revised source curriculum and will be in the v2 base soon. Re-import from the base to pull them once they land.`},
       {t:'java',u:4,m:'M3',c:'deferred',x:`Unit 4 image-module modernization deferred: a helper-library rework was set aside this cycle and the partial slides rolled back, so lecture, activity, lab, and homework stay aligned on the standard-library approach. Open to revisiting mid-semester.`},
       {t:'java',u:0,m:'All',c:'deferred',x:`Lab-and-Homework duplication (course-wide) deferred to next year's pass. Does not block the Java launch.`},
       {t:'java',u:1,m:'M4',c:'deferred',x:`Five Unit 1 Module 4 activity enhancements from the Python track were intentionally not mirrored into Java (discretionary parity, not launch-critical).`}
@@ -659,8 +659,8 @@
       d.style.setProperty('--catclr',CAT[it.c][1]);
       d.dataset.t=it.t; d.dataset.u=String(it.u); d.dataset.c=it.c; d.dataset.s=it.s||'live';
       var loc='Unit '+(it.u||'—')+((it.m && it.m!=='—')?' · '+it.m:'');
-      d.dataset.txt=(it.x+' '+loc+' '+CAT[it.c][0]+' '+TRACK[it.t]+' '+(it.surf||'')+' '+(it.s==='coming'?'landing today coming':'')).toLowerCase();
-      var comingB=it.s==='coming'?'<span class="cl-b coming">Landing today</span>':'';
+      d.dataset.txt=(it.x+' '+loc+' '+CAT[it.c][0]+' '+TRACK[it.t]+' '+(it.surf||'')+' '+(it.s==='coming'?'landing soon coming':'')).toLowerCase();
+      var comingB=it.s==='coming'?'<span class="cl-b coming">Landing soon</span>':'';
       var surfB=it.surf?'<span class="cl-b surf-'+it.surf+'">'+(it.surf==='slides'?'Slides':'EdStem')+'</span>':'';
       d.innerHTML='<div class="cl-badges"><span class="cl-b '+it.t+'">'+TRACK[it.t]+'</span><span class="cl-b loc">'+loc+'</span><span class="cl-b cat">'+CAT[it.c][0]+'</span>'+surfB+comingB+'</div><div class="cl-x">'+it.x+'</div>';
       listEl.appendChild(d);
