@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS1 with GenAI — Year 2 Instructor Briefing</title>
+<style>
+  :root{
+    --bg:#f7f8fa;
+    --ink:#1b1c57;
+    --body:#33354d;
+    --muted:#6b6d85;
+    --accent:#00c385;
+    --mint:#d7ffee;
+    --line:#e4e6ee;
+    --code-bg:#eef0f5;
+    --card:#ffffff;
+    --amber-bg:#fff7e6;
+    --amber-line:#e6c65c;
+    --amber-ink:#b45309;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+  .topbar{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line)}
+  .topbar-inner{max-width:60rem;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:18px;min-height:56px;flex-wrap:wrap}
+  .brand{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+  .tabs{display:flex;gap:4px;margin-left:auto}
+  .tab{border:0;background:transparent;font:inherit;cursor:pointer;padding:8px 14px;border-radius:8px;color:var(--muted);font-weight:600;font-size:14px}
+  .tab:hover{color:var(--ink);background:var(--bg)}
+  .tab.active{color:var(--ink);background:var(--bg)}
+  .tab.active span{border-bottom:2px solid var(--accent);padding-bottom:3px}
+
+  .panel{display:none}
+  .panel.active{display:block}
+
+  .deck-wrap{max-width:52rem;margin:0 auto;padding:28px 20px 40px}
+  .slide-stage{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:44px 44px 40px;min-height:62vh;position:relative;box-shadow:0 1px 2px rgba(27,28,87,.04)}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+  .slide h1{font-size:30px;line-height:1.16;letter-spacing:-.01em;color:var(--ink);font-weight:700;margin:0 0 6px;text-wrap:balance}
+  .slide h2{font-size:23px;line-height:1.2;color:var(--ink);font-weight:700;margin:0 0 18px;text-wrap:balance}
+  .rule{width:52px;height:3px;background:var(--accent);border:0;border-radius:2px;margin:14px 0 22px}
+  .slide p{margin:12px 0;font-size:17px}
+  .slide .sub{color:var(--muted);font-size:14.5px;margin-top:18px}
+  .slide ul{margin:14px 0;padding-left:0;list-style:none}
+  .slide li{position:relative;padding-left:22px;margin:11px 0;font-size:17px}
+  .slide li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.75}
+  .slide li b,.slide p b{color:var(--ink);font-weight:650}
+  .slide code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:1.5px 5px;border-radius:4px;color:var(--ink)}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:8px}
+  .twocol h3{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:0 0 6px}
+  .twocol .cap{font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}
+  .fill{color:var(--body);background:var(--amber-bg);border:1px dashed var(--amber-line);border-radius:6px;padding:2px 8px;font-size:.94em}
+
+  /* compare table */
+  .compare{width:100%;border-collapse:collapse;margin:18px 0 4px;font-size:16px}
+  .compare th,.compare td{text-align:left;padding:12px 16px;border:1px solid var(--line);vertical-align:top}
+  .compare thead th{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  .compare thead th.lab{background:var(--mint);color:var(--ink)}
+  .compare thead th.hw{background:#e7e9ff;color:var(--ink)}
+  .compare tbody th{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:#fafbfc;width:150px}
+  .compare td.lab{background:rgba(215,255,238,.5)}
+  .compare td.hw{background:rgba(231,233,255,.55)}
+
+  .alertbox{background:var(--amber-bg);border:1px solid var(--amber-line);border-radius:10px;padding:14px 18px;margin-top:22px;font-size:15px;color:var(--body)}
+  .alertbox b{color:var(--ink)}
+
+  /* timeline */
+  .timeline{display:flex;align-items:flex-start;margin:0 0 28px}
+  .tl-node{display:flex;flex-direction:column;align-items:center;gap:8px;flex:0 0 auto;width:120px;text-align:center}
+  .tl-dot{width:13px;height:13px;border-radius:50%;background:#fff;border:2px solid var(--line)}
+  .tl-node.done .tl-dot{background:var(--accent);border-color:var(--accent);opacity:.55}
+  .tl-node.active .tl-dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 5px rgba(0,195,133,.18)}
+  .tl-label{font-size:11.5px;font-weight:600;color:var(--muted);line-height:1.25}
+  .tl-node.active .tl-label{color:var(--ink)}
+  .tl-bar{flex:1 1 auto;height:2px;background:var(--line);margin-top:5px}
+  .tl-bar.done{background:var(--accent);opacity:.4}
+
+  /* anatomy */
+  .anat{display:flex;flex-direction:column;gap:16px;margin-top:4px}
+  .anat-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .anat-label{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);width:118px;flex:0 0 auto}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 15px;font-weight:650;color:var(--ink);font-size:15px}
+  .chip.accent{border-color:var(--accent);background:var(--mint)}
+  .chip.soft{background:var(--code-bg);border-color:var(--code-bg)}
+  .arrow{color:var(--muted);font-weight:700;font-size:15px}
+  .foot{font-size:13px;color:var(--muted);margin-top:2px}
+
+  /* import diagram */
+  .import-wrap{display:flex;align-items:center;justify-content:center;gap:18px;margin:14px 0 6px;flex-wrap:wrap}
+  .course-col{flex:1 1 210px;max-width:240px;border:1px solid var(--line);border-radius:12px;padding:16px 16px 8px;background:#fff}
+  .course-col h4{margin:0 0 12px;font-size:13px;color:var(--ink);text-align:center;font-weight:700}
+  .lesson{background:var(--code-bg);border-radius:8px;padding:9px 12px;margin:8px 0;font-size:13px;color:var(--body)}
+  .lesson.hl{background:var(--mint);border:1px solid var(--accent);color:var(--ink);font-weight:600}
+  .import-mid{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:12px;min-width:70px}
+  .import-mid .swap{font-size:30px;color:var(--accent);line-height:1}
+
+  /* coming-soon list */
+  .coming{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+  .coming-item{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-left:3px solid var(--amber-line);border-radius:11px;padding:14px 16px;background:#fff}
+  .coming-badge{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--amber-ink);background:var(--amber-bg);border:1px solid var(--amber-line);border-radius:999px;padding:3px 10px;white-space:nowrap;flex:0 0 auto}
+  .coming-item .what{font-size:16px;color:var(--ink);font-weight:600}
+
+  .controls{max-width:52rem;margin:0 auto;padding:14px 20px 0;display:flex;align-items:center;gap:12px}
+  .nav-btn{border:1px solid var(--line);background:var(--card);cursor:pointer;font:inherit;padding:8px 16px;border-radius:8px;color:var(--ink);font-weight:600;font-size:14px}
+  .nav-btn:hover{border-color:var(--accent)}
+  .nav-btn:disabled{opacity:.4;cursor:default}
+  .counter{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;margin-left:auto}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52rem;margin:16px auto 0;padding:0 20px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--line);border:0;cursor:pointer;padding:0}
+  .dot.active{background:var(--accent)}
+
+  /* filterable changelog */
+  .cl-head{max-width:52rem;margin:0 auto;padding:34px 20px 0}
+  .cl-head h1{font-size:22px;color:var(--ink);font-weight:700;margin:0 0 4px}
+  .cl-head p{color:var(--muted);font-size:14px;margin:0}
+  .cl-toolbar{max-width:52rem;margin:0 auto;padding:16px 20px 0}
+  .cl-search{width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:15px;color:var(--ink);background:#fff}
+  .cl-search::placeholder{color:var(--muted)}
+  .cl-groups{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+  .cl-group{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .cl-glabel{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);width:64px;flex:0 0 auto}
+  .cl-chip{font:inherit;font-size:13px;padding:5px 12px;border:1px solid var(--line);background:#fff;color:var(--body);border-radius:999px;cursor:pointer;white-space:nowrap}
+  .cl-chip:hover{border-color:var(--accent)}
+  .cl-chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .cl-chip.coming-chip.on{background:var(--amber-ink);border-color:var(--amber-ink)}
+  .cl-bar{max-width:52rem;margin:16px auto 0;padding:0 20px;display:flex;align-items:center;gap:12px}
+  .cl-count{font-size:13px;color:var(--muted)}
+  .cl-clear{margin-left:auto;font:inherit;font-size:13px;background:none;border:0;color:var(--accent);cursor:pointer;text-decoration:underline}
+  .cl-list{max-width:52rem;margin:10px auto 0;padding:8px 20px 64px;display:flex;flex-direction:column;gap:10px}
+  .cl-item{background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 15px;border-left:3px solid var(--catclr,var(--line))}
+  .cl-item.hidden{display:none}
+  .cl-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px;align-items:center}
+  .cl-b{font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 8px;border-radius:999px}
+  .cl-b.py{background:#e7e9ff;color:#3b3f9c}
+  .cl-b.java{background:var(--mint);color:#0b6b49}
+  .cl-b.loc{background:var(--code-bg);color:var(--muted);text-transform:none;letter-spacing:0;font-weight:600}
+  .cl-b.cat{background:transparent;border:1px solid var(--line);color:var(--body)}
+  .cl-b.coming{background:var(--amber-bg);color:var(--amber-ink);border:1px solid var(--amber-line)}
+  .cl-x{font-size:15px;line-height:1.55;color:var(--body)}
+  .cl-x code{font-family:var(--mono);font-size:.85em;background:var(--code-bg);padding:1.5px 5px;border-radius:4px;color:var(--ink)}
+
+  .page{max-width:44rem;margin:0 auto;padding:40px 24px 80px}
+  .page header{margin-bottom:20px}
+  .page h1{font-size:26px;line-height:1.18;letter-spacing:-.01em;color:var(--ink);font-weight:700;margin:0}
+  .page .lede{color:var(--muted);font-size:15px;margin:16px 0 0;max-width:62ch}
+  .page h2{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:40px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .page p{margin:12px 0}
+  .page ul{margin:10px 0;padding-left:0;list-style:none}
+  .page li{position:relative;padding-left:20px;margin:9px 0}
+  .page li::before{content:"";position:absolute;left:2px;top:.68em;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7}
+  .page li b,.page p b{color:var(--ink);font-weight:650}
+  .page code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:1.5px 5px;border-radius:4px;color:var(--ink)}
+  .page footer{margin-top:52px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+
+  .callout{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:14px 18px;margin:18px 0}
+  .callout b{color:var(--ink)}
+
+  @media (max-width:640px){
+    .slide-stage{padding:30px 22px}
+    .slide h1{font-size:24px}
+    .slide h2{font-size:20px}
+    .twocol{grid-template-columns:1fr;gap:18px}
+    .anat-label{width:100%}
+    .brand{display:none}
+    .tl-node{width:80px}
+    .tl-label{font-size:10.5px}
+    .cl-glabel{width:100%}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">CodePath · CiR · CS1</span>
+    <div class="tabs">
+      <button class="tab active" data-panel="slides"><span>Slides</span></button>
+      <button class="tab" data-panel="changelogs"><span>Changelogs</span></button>
+      <button class="tab" data-panel="feedback"><span>Feedback</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ SLIDES ============================ -->
+<section class="panel active" id="slides">
+  <div class="deck-wrap">
+    <div class="slide-stage">
+
+      <!-- 1 · Title -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">CodePath Curriculum · CodePath in Residence</p>
+        <h1>Introduction to Computer Science with GenAI</h1>
+        <hr class="rule">
+        <p class="sub" style="font-size:16px">Year 2 instructor briefing · Summer 2026 revision · Python &amp; Java tracks</p>
+        <p>What the course is, what changed for Year 2, and how to work with it and reach us.</p>
+      </div>
+
+      <!-- 2 · Team -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">Who we are</p>
+        <h2>The Curriculum Team</h2>
+        <hr class="rule">
+        <ul>
+          <li>I'm Sar; I lead curriculum development at CodePath, with our team.</li>
+          <li>We build, maintain, and quality-check curriculum across CodePath's courses.</li>
+          <li>For CS1, we own this year's revision and we're your support for the term.</li>
+        </ul>
+      </div>
+
+      <!-- 3 · Origins -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">Origins</p>
+        <h2>Where this curriculum came from</h2>
+        <hr class="rule">
+        <ul>
+          <li>Designed by Google. You heard the original design vision on Tuesday.</li>
+          <li>CodePath adopted it rather than building it from scratch, which is unusual for us.</li>
+          <li><b>The key difference:</b> this course comes with the opportunity, and the responsibility, to deeply adapt it to your students.</li>
+        </ul>
+      </div>
+
+      <!-- 4 · Working with it -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">Working with the curriculum</p>
+        <h2>What to keep, what's yours to change</h2>
+        <hr class="rule">
+        <div class="twocol">
+          <div>
+            <h3>Keep these true</h3>
+            <ul>
+              <li>Code examples are real and runnable.</li>
+              <li>Grading is fair: correct work gets credit.</li>
+              <li>Students think before reaching for GenAI.</li>
+              <li>Preserve the original design intent.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Yours to change</h3>
+            <ul>
+              <li>Pacing and emphasis.</li>
+              <li>Your own examples and walkthroughs.</li>
+              <li>Assignments you build.</li>
+              <li>Ordering and delivery in your classroom.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="alertbox"><b>Unsure why something is the way it is?</b> Treat that as a signal to pause and understand the design intent before you change it. If you're stuck, ask us.</div>
+      </div>
+
+      <!-- 5 · Anatomy -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">Orientation</p>
+        <h2>Anatomy of the course</h2>
+        <hr class="rule">
+        <div class="anat">
+          <div class="anat-row">
+            <span class="anat-label">Structure</span>
+            <span class="chip">Unit</span><span class="arrow">&rarr;</span>
+            <span class="chip soft">Module</span><span class="chip soft">Module</span><span class="chip soft">Module</span>
+          </div>
+          <div class="anat-row">
+            <span class="anat-label">Inside a module</span>
+            <span class="chip accent">ICAs</span><span class="arrow">+</span>
+            <span class="chip accent">Lab</span><span class="arrow">+</span><span class="chip accent">Homework</span>
+          </div>
+          <div class="anat-row">
+            <span class="anat-label">Also</span>
+            <span class="chip">Projects</span>
+            <span class="chip">Exams</span>
+            <span class="foot">Four unit exams (EdStem calls them "quizzes").</span>
+          </div>
+        </div>
+        <div class="alertbox"><b>Heads up on EdStem's naming:</b> EdStem labels every item a "lesson", even projects and exams. Don't let the label throw you.</div>
+      </div>
+
+      <!-- 6 · Timeline + Year 1 -->
+      <div class="slide" data-slide>
+        <div class="timeline">
+          <div class="tl-node active"><span class="tl-dot"></span><span class="tl-label">Year 1 launch<br>(Fall 2025)</span></div>
+          <div class="tl-bar"></div>
+          <div class="tl-node"><span class="tl-dot"></span><span class="tl-label">Mid-run<br>feedback</span></div>
+          <div class="tl-bar"></div>
+          <div class="tl-node"><span class="tl-dot"></span><span class="tl-label">Summer 2026<br>revision</span></div>
+          <div class="tl-bar"></div>
+          <div class="tl-node"><span class="tl-dot"></span><span class="tl-label">You teach<br>Year 2</span></div>
+        </div>
+        <p class="eyebrow">Year 1 · Fall 2025</p>
+        <h2>What CodePath did in Year 1</h2>
+        <ul>
+          <li>Adopted Google's design and structure as-is.</li>
+          <li>Built the full <b>Java track</b> from the Python original.</li>
+          <li>Implemented it into EdStem and the course portal for delivery at scale.</li>
+          <li>Ran a GIR-supported review pass.</li>
+        </ul>
+      </div>
+
+      <!-- 7 · Timeline + mid-run feedback -->
+      <div class="slide" data-slide>
+        <div class="timeline">
+          <div class="tl-node done"><span class="tl-dot"></span><span class="tl-label">Year 1 launch<br>(Fall 2025)</span></div>
+          <div class="tl-bar done"></div>
+          <div class="tl-node active"><span class="tl-dot"></span><span class="tl-label">Mid-run<br>feedback</span></div>
+          <div class="tl-bar"></div>
+          <div class="tl-node"><span class="tl-dot"></span><span class="tl-label">Summer 2026<br>revision</span></div>
+          <div class="tl-bar"></div>
+          <div class="tl-node"><span class="tl-dot"></span><span class="tl-label">You teach<br>Year 2</span></div>
+        </div>
+        <p class="eyebrow">During Year 1</p>
+        <h2>We asked instructors for feedback</h2>
+        <ul>
+          <li>While the course ran, we collected instructor feedback on what worked and what didn't.</li>
+          <li>&#9888;&#65039; Only two or three instructors responded.</li>
+          <li><b>That feedback is the single biggest way this course improves.</b> Please use the feedback board this year, it's on the Feedback tab.</li>
+        </ul>
+      </div>
+
+      <!-- 8 · Timeline + five themes -->
+      <div class="slide" data-slide>
+        <div class="timeline">
+          <div class="tl-node done"><span class="tl-dot"></span><span class="tl-label">Year 1 launch<br>(Fall 2025)</span></div>
+          <div class="tl-bar done"></div>
+          <div class="tl-node done"><span class="tl-dot"></span><span class="tl-label">Mid-run<br>feedback</span></div>
+          <div class="tl-bar done"></div>
+          <div class="tl-node active"><span class="tl-dot"></span><span class="tl-label">Summer 2026<br>revision</span></div>
+          <div class="tl-bar"></div>
+          <div class="tl-node"><span class="tl-dot"></span><span class="tl-label">You teach<br>Year 2</span></div>
+        </div>
+        <p class="eyebrow">Summer 2026 revision</p>
+        <h2>What changed: five themes</h2>
+        <ul>
+          <li><b>Trustworthy to learn from.</b> Example code runs and compiles; shown output matches reality.</li>
+          <li><b>Fairer autograders.</b> No more false failures over whitespace, quotes, or print handling; point spreads rebalanced.</li>
+          <li><b>Clearer instructions.</b> Dense prompts and project write-ups rewritten as plain tasks; new teaching slides (tracing, <code>=</code> vs <code>==</code>, precedence, debugger, exceptions).</li>
+          <li><b>Learn-by-doing before AI.</b> GenAI hints moved behind a reveal; students write and trace first.</li>
+          <li><b>Java that reads like Java.</b> Python idioms cleaned up, Unit 4 repaired, capstone rewritten, decks correctly linked.</li>
+        </ul>
+        <p class="sub">Unit 1 saw by far the most change. 70+ Python fixes, all live in EdStem. Full detail in the <b>Changelogs</b> tab.</p>
+      </div>
+
+      <!-- 9 · Lab & Homework -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">By design</p>
+        <h2>Lab and Homework feel similar on purpose</h2>
+        <hr class="rule">
+        <p>Students often feel they're doing the same thing twice. They're doing similar activities, but in two very different modes.</p>
+        <table class="compare">
+          <thead>
+            <tr><th></th><th class="lab">Lab</th><th class="hw">Homework</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>Purpose</th><td class="lab">Practice</td><td class="hw">Proof</td></tr>
+            <tr><th>How students work</th><td class="lab">Exploratory: experiment, try things, get it working</td><td class="hw">Show you can do it on your own</td></tr>
+            <tr><th>Mode</th><td class="lab">Collaborative</td><td class="hw">Individual</td></tr>
+          </tbody>
+        </table>
+        <p class="sub">Explaining this to students defuses most of the frustration. If it's still causing friction, flag it, the differentiate-or-drop question is deferred to next year and your input will shape it.</p>
+      </div>
+
+      <!-- 10 · What we did not change -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">Year 2 · Scope</p>
+        <h2>What we did not change, and why</h2>
+        <hr class="rule">
+        <ul>
+          <li><b>Unit 4 image module (Java).</b> A planned modernization was deferred; the partial slides were rolled back so lecture, lab, and homework stay consistent on the standard-library approach. It works as-is. We're open to revisiting mid-semester if there's demand.</li>
+          <li><b>Returners:</b> clone from the <b>v2 base</b>, not last year's copy, so you start from the current curriculum.</li>
+        </ul>
+      </div>
+
+      <!-- 11 · Import lessons -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">Docs &amp; demos</p>
+        <h2>Move content between courses in EdStem</h2>
+        <hr class="rule">
+        <div class="import-wrap">
+          <div class="course-col">
+            <h4>Your EdStem course</h4>
+            <div class="lesson">Your Lab 2</div>
+            <div class="lesson hl">Your Project</div>
+            <div class="lesson">Your Homework 3</div>
+          </div>
+          <div class="import-mid">
+            <span class="swap">&#8644;</span>
+            <span>Import<br>Lesson</span>
+          </div>
+          <div class="course-col">
+            <h4>CS1 v2 base</h4>
+            <div class="lesson hl">Updated Unit 1</div>
+            <div class="lesson">Revised capstone</div>
+            <div class="lesson">Exam 1</div>
+          </div>
+        </div>
+        <p><b>"Import Lesson"</b> copies individual lessons either direction, without replacing anything. Pull our updates into your course, or bring your own assignments into the base.</p>
+        <p class="sub">Live demo. Your full diff of what changed is in the <b>Changelogs</b> tab.</p>
+      </div>
+
+      <!-- 12 · Coming for Java (landing today) -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">Java · Landing today</p>
+        <h2>A few Java pieces land by end of day</h2>
+        <hr class="rule">
+        <p>The Java track is nearly complete. Two pieces are still in flight and will be in the v2 base by <b>end of day today</b>:</p>
+        <div class="coming">
+          <div class="coming-item"><span class="coming-badge">Landing today</span><span class="what">The four Java unit exams</span></div>
+          <div class="coming-item"><span class="coming-badge">Landing today</span><span class="what">Unit 4.3 Lab and Homework (Image files)</span></div>
+        </div>
+        <p class="sub">This is exactly why you may want to import from the v2 base again later: once these land, pull them straight into your course with Import Lesson, no rebuilding. They're flagged "Landing today" in the Changelogs tab.</p>
+      </div>
+
+      <!-- 13 · Support -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">Support</p>
+        <h2>How to reach us this term</h2>
+        <hr class="rule">
+        <ul>
+          <li><b>Fix-it Garages.</b> Monday&ndash;Thursday, 1:30 PT / 4:30 ET. I plan to be at all four, most weeks (I'll aim for roughly 90% of the time). Bring curriculum questions any day.</li>
+          <li><b>Feedback board.</b> Submit bugs, suggestions, and questions through the form on the <b>Feedback tab</b>.</li>
+        </ul>
+        <p class="sub">This is the escalation path for anything you hit while teaching or modifying the course.</p>
+      </div>
+
+      <!-- 14 · Q&A -->
+      <div class="slide" data-slide>
+        <p class="eyebrow">Questions</p>
+        <h2>Questions</h2>
+        <hr class="rule">
+        <p>The curriculum, the Year 2 changes, or working with the course. Diogo and Julia are welcome to add context.</p>
+        <p class="sub">Changelogs and the feedback form are on the tabs above, available any time.</p>
+      </div>
+
+    </div>
+
+    <div class="controls">
+      <button class="nav-btn" id="prevBtn">&larr; Prev</button>
+      <button class="nav-btn" id="nextBtn">Next &rarr;</button>
+      <span class="counter" id="counter">1 / 14</span>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<!-- ============================ CHANGELOGS (filterable) ============================ -->
+<section class="panel" id="changelogs">
+  <div class="cl-head">
+    <h1>Summer 2026 changelog</h1>
+    <p>Every change across both tracks. Filter by track, unit, type, or status, or search. Chips within a row stack; leave a row empty to include everything.</p>
+  </div>
+  <div class="cl-toolbar">
+    <input type="text" id="cl-search" class="cl-search" placeholder="Search changes (e.g. autograder, Parsons, Scanner, exam, capstone)…">
+    <div class="cl-groups">
+      <div class="cl-group"><span class="cl-glabel">Track</span>
+        <button class="cl-chip" data-g="track" data-v="py">Python</button>
+        <button class="cl-chip" data-g="track" data-v="java">Java</button>
+      </div>
+      <div class="cl-group"><span class="cl-glabel">Unit</span>
+        <button class="cl-chip" data-g="unit" data-v="1">Unit 1</button>
+        <button class="cl-chip" data-g="unit" data-v="2">Unit 2</button>
+        <button class="cl-chip" data-g="unit" data-v="3">Unit 3</button>
+        <button class="cl-chip" data-g="unit" data-v="4">Unit 4</button>
+      </div>
+      <div class="cl-group"><span class="cl-glabel">Type</span>
+        <button class="cl-chip" data-g="cat" data-v="correctness">Code correctness</button>
+        <button class="cl-chip" data-g="cat" data-v="autograder">Autograders</button>
+        <button class="cl-chip" data-g="cat" data-v="clarity">Clarity &amp; examples</button>
+        <button class="cl-chip" data-g="cat" data-v="lbd">Learn-by-doing</button>
+        <button class="cl-chip" data-g="cat" data-v="java">Java idioms</button>
+        <button class="cl-chip" data-g="cat" data-v="edstem">EdStem / decks</button>
+        <button class="cl-chip" data-g="cat" data-v="deferred">Deferred</button>
+      </div>
+      <div class="cl-group"><span class="cl-glabel">Status</span>
+        <button class="cl-chip coming-chip" data-g="status" data-v="coming">Landing today</button>
+      </div>
+    </div>
+  </div>
+  <div class="cl-bar"><span class="cl-count" id="cl-count"></span><button class="cl-clear" id="cl-clear">Clear filters</button></div>
+  <div class="cl-list" id="cl-list"></div>
+</section>
+
+<!-- ============================ FEEDBACK ============================ -->
+<section class="panel" id="feedback">
+  <div class="page">
+    <header>
+      <p class="eyebrow" style="color:var(--muted);margin:0 0 10px">CodePath · CiR · CS1</p>
+      <h1>How to reach us &amp; submit feedback</h1>
+      <hr class="rule">
+      <p class="lede">Two ways to get curriculum help this term: come to a live Fix-it Garage, or submit anything (bugs, suggestions, questions) to the feedback board. Use the board freely, it's how we know what to prioritize.</p>
+    </header>
+
+    <h2>Submit feedback</h2>
+    <div class="callout">
+      <p style="margin-top:0"><b>Curriculum feedback board (Asana).</b> Submit through a short form.</p>
+      <p><b>Submit a ticket:</b> <a href="https://form.asana.com/?k=qLStiR35cRFd334XJ51qdg&amp;d=854165295642105" target="_blank" rel="noopener">Open the curriculum feedback form</a></p>
+      <p style="margin-bottom:0">To submit the form, you'll need to be signed in to Asana with your CodePath email (the form requires it). Beyond that, you don't have to use or monitor the Asana board at all, viewing it, commenting, and tracking your ticket there is optional.</p>
+    </div>
+    <ul>
+      <li>Good things to send: broken or wrong example code, autograder false-failures, confusing instructions, and suggestions for improvement.</li>
+      <li>Include the track (Python or Java), the unit and module, and a link or screenshot where you can.</li>
+    </ul>
+
+    <h2>Fix-it Garages</h2>
+    <ul>
+      <li><b>When:</b> Monday through Thursday, 1:30 PT / 4:30 ET.</li>
+      <li><b>Curriculum coverage:</b> I plan to be at all four sessions each week, most weeks (I'll aim for roughly 90% of the time). Bring your curriculum questions any day.</li>
+      <li>Drop in with anything you're changing or unsure about, and we can talk it through live.</li>
+    </ul>
+
+    <h2>A note on modifying the course</h2>
+    <p>You have the opportunity to deeply adapt this course. Keep these true: code examples are real and runnable, grading is fair, students think before reaching for GenAI, and the original design intent is preserved. If you're unsure why something is the way it is, pause and understand the intent before you change it, and if you're stuck, ask us.</p>
+
+    <footer>CodePath · CS1 "Introduction to Computer Science with GenAI" · CodePath in Residence, Year 2.</footer>
+  </div>
+</section>
+
+<script>
+  // tabs
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
+      document.querySelectorAll('.panel').forEach(function(x){x.classList.remove('active')});
+      t.classList.add('active');
+      document.getElementById(t.dataset.panel).classList.add('active');
+      window.scrollTo(0,0);
+    });
+  });
+
+  // slide engine
+  var slides = Array.prototype.slice.call(document.querySelectorAll('[data-slide]'));
+  var idx = 0;
+  var counter = document.getElementById('counter');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var dotsWrap = document.getElementById('dots');
+  slides.forEach(function(s,i){
+    var d = document.createElement('button');
+    d.className = 'dot' + (i===0?' active':'');
+    d.addEventListener('click', function(){ go(i); });
+    dotsWrap.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+  function render(){
+    slides.forEach(function(s,i){ s.style.display = (i===idx?'block':'none'); });
+    dots.forEach(function(d,i){ d.classList.toggle('active', i===idx); });
+    counter.textContent = (idx+1) + ' / ' + slides.length;
+    prevBtn.disabled = (idx===0);
+    nextBtn.disabled = (idx===slides.length-1);
+  }
+  function go(i){ idx = Math.max(0, Math.min(slides.length-1, i)); render(); }
+  prevBtn.addEventListener('click', function(){ go(idx-1); });
+  nextBtn.addEventListener('click', function(){ go(idx+1); });
+  document.addEventListener('keydown', function(e){
+    if(!document.getElementById('slides').classList.contains('active')) return;
+    if(e.key==='ArrowRight' || e.key==='PageDown'){ go(idx+1); }
+    if(e.key==='ArrowLeft' || e.key==='PageUp'){ go(idx-1); }
+  });
+  render();
+
+  // filterable changelog
+  (function(){
+    var CAT={
+      correctness:['Code correctness','#00c385'],
+      autograder:['Autograders','#fe6901'],
+      clarity:['Clarity & examples','#4f5dff'],
+      lbd:['Learn-by-doing','#02bcff'],
+      java:['Java idioms','#b243ff'],
+      edstem:['EdStem / decks','#6b6d85'],
+      deferred:['Deferred','#b45309']
+    };
+    var TRACK={py:'Python',java:'Java'};
+    var DATA=[
+      // ---- Python ----
+      {t:'py',u:1,m:'M1',c:'clarity',x:`Added a worked example on printing multiple arguments to the Module 1 activity.`},
+      {t:'py',u:1,m:'M1',c:'clarity',x:`Defined the term "argument" inline before the Module 1 activity first uses it.`},
+      {t:'py',u:1,m:'M1',c:'clarity',x:`Co-located each scenario with its question in the Lesson 2 activity.`},
+      {t:'py',u:1,m:'M1',c:'correctness',x:`Corrected a lab Parsons problem's expected output (a missing blank line), and fixed a "cantaloupe" misspelling.`},
+      {t:'py',u:1,m:'M2',c:'autograder',x:`Changed the modify/write test harness so it compares output correctly and no longer fails student code over newline handling.`},
+      {t:'py',u:1,m:'M2',c:'autograder',x:`Loosened an activity test to accept an f-string written with either single or double quotes.`},
+      {t:'py',u:1,m:'M2',c:'clarity',x:`Added two lecture slides: "assignment versus equality" and "program tracing."`},
+      {t:'py',u:1,m:'M2',c:'clarity',x:`Added an operator-precedence (PEMDAS) explanation to a precedence question.`},
+      {t:'py',u:1,m:'M2',c:'clarity',x:`Improved two type-conversion examples: introduce integer-versus-float behavior without an operator taught later, plus a clearer integer-to-boolean example.`},
+      {t:'py',u:1,m:'M2',c:'clarity',x:`Replaced an activity Explore preamble with a clearer version tying functions, methods, and expressions to return values, and corrected a factual error.`},
+      {t:'py',u:1,m:'M2',c:'correctness',x:`Fixed a broken type-conversion example, stated a previously hidden f-string requirement, and corrected a wrong word in an activity code block.`},
+      {t:'py',u:1,m:'M2',c:'correctness',x:`Corrected displayed output across lab and homework exercises so typed input appears on the same line as its prompt, and fixed spelling/pluralization (e.g. "bag(s) of coffee").`},
+      {t:'py',u:1,m:'M3',c:'autograder',x:`Changed a lab test harness that stripped <code>print</code> statements and caused correct conditionals to read as errors; fixed once at the harness level (most Module 3 labs).`},
+      {t:'py',u:1,m:'M3',c:'autograder',x:`Rebalanced point spreads on a homework and two lab exercises, and applied input mocking to a Write Code lab.`},
+      {t:'py',u:1,m:'M3',c:'clarity',x:`Removed references to Lists from a lecture before Lists are taught, converting those examples to string checks.`},
+      {t:'py',u:1,m:'M3',c:'clarity',x:`Rewrote several dense prompts into plain, bulleted tasks (restaurant-meal, favorite-cities, race/place-points, pizza-slices, letter-grade, potions).`},
+      {t:'py',u:1,m:'M3',c:'clarity',x:`Rewrote the if- and else-statement Explore examples, added a worked example, and simplified convoluted change-instructions.`},
+      {t:'py',u:1,m:'M3',c:'clarity',x:`Added a runtime-exception worked example (a <code>ValueError</code>) with a debugged version, and a beginner debugger introduction.`},
+      {t:'py',u:1,m:'M3',c:'correctness',x:`Fixed several homework and lab items: Parsons output and scrambled blocks, answer-key alignment, and a deliberately buggy exercise rebuilt to produce the intended output.`},
+      {t:'py',u:1,m:'M4',c:'clarity',x:`Added worked examples and scaffolding for loops: list iteration, nested <code>for</code> and <code>while</code> loops, and a line after a loop to show code runs once it finishes.`},
+      {t:'py',u:1,m:'M4',c:'clarity',x:`Added supporting notes: <code>range()</code> exercises with an immutability note, a built-in-functions recap, the <code>for _ in range(3)</code> idiom, and a PEP 8 loop-counter note.`},
+      {t:'py',u:1,m:'M4',c:'clarity',x:`Converted an activity into an open-ended pizza-topping challenge with starter code and answer key, and improved a Parsons problem.`},
+      {t:'py',u:1,m:'M4',c:'lbd',x:`Reworked an activity so students write and test the loop themselves first, with GenAI as an optional comparison; loosened a homework test to accept either quote style.`},
+      {t:'py',u:1,m:'M4',c:'correctness',x:`Replaced incorrect "Explore further" text in a Lesson 1 activity.`},
+      {t:'py',u:1,m:'All',c:'lbd',x:`In every homework and lab, GenAI prompting suggestions inside "Explain Code" and "Determine Output" questions were moved behind a collapsed reveal.`},
+      {t:'py',u:2,m:'M1',c:'clarity',x:`Introduced the <code>if __name__ == "__main__":</code> main idiom with an example and follow-up, then rolled it out across Module 1's activities, homework, labs, and instructor guides.`},
+      {t:'py',u:2,m:'M1',c:'correctness',x:`Fixed a debug-code homework answer key so an invalid-input case no longer throws, with a related variable-name correction.`},
+      {t:'py',u:2,m:'M1',c:'clarity',x:`Reworded "create a diagram" instructions to ask for the text-based function decomposition the lesson teaches.`},
+      {t:'py',u:0,m:'All',c:'deferred',x:`Lab-and-Homework duplication (course-wide): the Lab and Homework are close to identical by design. Whether to keep, differentiate, or drop one is still under discussion. Spans Units 1-4.`},
+      // ---- Java ----
+      {t:'java',u:1,m:'M1',c:'clarity',x:`Closed a gap in print coverage: a note on <code>System.out.println()</code> with no argument, and a worked example on <code>+</code> concatenation, with matching slides.`},
+      {t:'java',u:1,m:'M1',c:'clarity',x:`Defined the term "argument" inline before first use, with a supporting slide.`},
+      {t:'java',u:1,m:'M1',c:'clarity',x:`Co-located each scenario with its question in the Lesson 2 activity.`},
+      {t:'java',u:1,m:'M1',c:'correctness',x:`Corrected a lab Parsons problem's expected output and fixed a "cantaloupe" misspelling.`},
+      {t:'java',u:1,m:'M1',c:'java',x:`Corrected the "Song: Blue in Green" slide to use a valid, properly escaped Java string, and cleaned up comment and escape-sequence syntax.`},
+      {t:'java',u:1,m:'M2',c:'autograder',x:`Fixed the homework/lab test harness so it normalizes newline differences and no longer fails correct code over whitespace.`},
+      {t:'java',u:1,m:'M2',c:'clarity',x:`Added two lecture slides: "assignment versus equality" (<code>=</code> vs <code>==</code>, a common beginner error) and "program tracing."`},
+      {t:'java',u:1,m:'M2',c:'clarity',x:`Added an operator-precedence (PEMDAS) reference to the precedence question.`},
+      {t:'java',u:1,m:'M2',c:'clarity',x:`Improved type-conversion material: an int-versus-float example now uses an explicit <code>(int)</code> cast, and an <code>isOpen</code> example shows int-to-boolean.`},
+      {t:'java',u:1,m:'M2',c:'clarity',x:`Replaced the return-values activity preamble with a clearer version, and fixed typos.`},
+      {t:'java',u:1,m:'M2',c:'clarity',x:`Added a clarifying warning to the Lab Write Code 3 exercise (store the day count directly; don't read it with <code>Scanner</code>).`},
+      {t:'java',u:1,m:'M3',c:'autograder',x:`Fixed the lab test harness that stripped print statements: it now compiles the student's program once and checks real output (most Module 3 labs).`},
+      {t:'java',u:1,m:'M3',c:'autograder',x:`Rebalanced point spreads on a homework and a lab Modify Code exercise, and rebuilt the border-states lab test to use input mocking.`},
+      {t:'java',u:1,m:'M3',c:'clarity',x:`Removed premature references to collections from the relational/logical-operator lecture; arrays and <code>.contains()</code> appear only later.`},
+      {t:'java',u:1,m:'M3',c:'clarity',x:`Rewrote several dense prompts into plain, bulleted tasks (<code>PizzaParty</code>, <code>GradeConverter</code>, <code>PotionGame</code>, and others).`},
+      {t:'java',u:1,m:'M3',c:'clarity',x:`Rewrote the if-statement Explore text to match the code, replaced the else example with a clearer speed example, and added a worked <code>&amp;&amp;</code> walkthrough.`},
+      {t:'java',u:1,m:'M3',c:'clarity',x:`Added a runtime-exception example (parsing <code>"three"</code> with <code>Integer.parseInt</code> for a <code>NumberFormatException</code>) with a debugged version and a "Swamp of Distraction" debugger challenge.`},
+      {t:'java',u:1,m:'M4',c:'clarity',x:`Added loop scaffolding: a for-each array loop, a nested while-loop "song" example, and a "Done" line after loops. Rewrote the <code>isRaining</code> while-loop so it is valid and terminates.`},
+      {t:'java',u:1,m:'M4',c:'java',x:`Reworded misleading "create a main method" Parsons prompts, and noted where code blocks sit inside a full class with a <code>main</code> method.`},
+      {t:'java',u:1,m:'M4',c:'clarity',x:`Made the platform-specific "Ctrl+C" instruction platform-agnostic ("Ctrl+C or Cmd+C").`},
+      {t:'java',u:1,m:'M4',c:'correctness',x:`Fixed two homework debug exercises: restructured a badly-formed <code>while</code> loop and moved a <code>Scanner</code> declaration outside its loop.`},
+      {t:'java',u:1,m:'M4',c:'java',x:`Removed a misleading "multiply Strings in Java" GenAI prompt (the solution uses <code>.repeat(5)</code>), and replaced leftover "Python" sample data with Java content.`},
+      {t:'java',u:1,m:'M4',c:'java',x:`Fixed string comparisons to use <code>.equals()</code> instead of <code>==</code>/<code>!=</code>; fixed a "syntac" typo; corrected a line that said students would "learn Python logic" to say Java; fixed instructor-guide markdown.`},
+      {t:'java',u:1,m:'M4',c:'lbd',x:`Reworked an activity so students write and run the loop themselves first, with GenAI as an optional comparison.`},
+      {t:'java',u:1,m:'All',c:'lbd',x:`In every homework and lab, GenAI prompting suggestions inside "Explain Code" and "Determine Output" questions were moved behind a collapsed reveal.`},
+      {t:'java',u:2,m:'M1',c:'clarity',x:`Confirmed Java's entry point (<code>public static void main(String[] args)</code>) is taught structurally throughout the module, so no separate introduction was needed.`},
+      {t:'java',u:2,m:'M1',c:'correctness',x:`Fixed the temperature-conversion debug homework so an invalid unit is handled gracefully (returns <code>null</code>, caller guards output).`},
+      {t:'java',u:2,m:'M1',c:'correctness',x:`Fixed a "decompose problems" activity example whose methods were incorrectly <code>static</code>, so it now compiles; methods are instance methods and state is stored correctly.`},
+      {t:'java',u:2,m:'M1',c:'clarity',x:`Reworded "create a diagram" instructions to ask for the text-based method decomposition the lesson teaches.`},
+      {t:'java',u:3,m:'—',c:'edstem',x:`No content edits. The nested-HashMaps lecture deck is now correctly embedded; EdStem housekeeping (removing an empty duplicate stub, retitling Python-era lesson names) is in progress.`},
+      {t:'java',u:4,m:'M1-2',c:'correctness',x:`Fixed broken code in the text-files lecture (4.1.1): the averaging example compiles and the error-handling message matches its output.`},
+      {t:'java',u:4,m:'M1-2',c:'correctness',x:`Fixed broken code in the CSV lecture (4.1.2): sample rows and map use Java-idiomatic formatting.`},
+      {t:'java',u:4,m:'M1-2',c:'correctness',x:`Fixed broken code in the data-analysis (4.2.1) and Kaggle-dataset (4.2.2) lectures: consistent names and matching outputs.`},
+      {t:'java',u:4,m:'M1-2',c:'clarity',x:`Added point-of-use scaffolding for checked exceptions so <code>throws Exception</code> is briefly explained where it first appears.`},
+      {t:'java',u:4,m:'M3',c:'java',x:`Corrected the image-files lecture (4.3.1): replaced Python terminology with the real Java class name (<code>ImageIO</code>) and fixed the crop explanation for <code>getSubimage(x, y, width, height)</code>.`},
+      {t:'java',u:4,m:'M3',c:'edstem',x:`Pointed the EdStem image-files lessons at the correct decks and kept the module on its standard-library Java approach (helper-library modernization deferred).`},
+      {t:'java',u:4,m:'M3',c:'edstem',s:'coming',x:`<b>Landing by end of day today:</b> the Java <b>Unit 4.3 Lab and Homework (Image files)</b> are being built in EdStem now and will be in the v2 base by end of day. Re-import from the base to pull them once they land.`},
+      {t:'java',u:4,m:'Capstone',c:'correctness',x:`Rewrote the Unit 4 capstone to match what the course teaches: imports the CSV with <code>BufferedReader</code>/<code>Scanner</code> and <code>split(",")</code> into a nested <code>ArrayList&lt;String[]&gt;</code>, removing external-library dependencies.`},
+      {t:'java',u:4,m:'Exams',c:'edstem',s:'coming',x:`<b>Landing by end of day today:</b> the <b>four Java unit exams</b> are being built in EdStem from the revised source curriculum and will be in the v2 base by end of day. Re-import from the base to pull them once they land.`},
+      {t:'java',u:4,m:'M3',c:'deferred',x:`Unit 4 image-module modernization deferred: a helper-library rework was set aside this cycle and the partial slides rolled back, so lecture, activity, lab, and homework stay aligned on the standard-library approach. Open to revisiting mid-semester.`},
+      {t:'java',u:0,m:'All',c:'deferred',x:`Lab-and-Homework duplication (course-wide) deferred to next year's pass. Does not block the Java launch.`},
+      {t:'java',u:1,m:'M4',c:'deferred',x:`Five Unit 1 Module 4 activity enhancements from the Python track were intentionally not mirrored into Java (discretionary parity, not launch-critical).`}
+    ];
+
+    var f={track:new Set(),unit:new Set(),cat:new Set(),status:new Set(),q:''};
+    var listEl=document.getElementById('cl-list');
+    var countEl=document.getElementById('cl-count');
+
+    DATA.forEach(function(it){
+      var d=document.createElement('div');
+      d.className='cl-item';
+      d.style.setProperty('--catclr',CAT[it.c][1]);
+      d.dataset.t=it.t; d.dataset.u=String(it.u); d.dataset.c=it.c; d.dataset.s=it.s||'live';
+      var loc='Unit '+(it.u||'—')+((it.m && it.m!=='—')?' · '+it.m:'');
+      d.dataset.txt=(it.x+' '+loc+' '+CAT[it.c][0]+' '+TRACK[it.t]+' '+(it.s==='coming'?'landing today coming':'')).toLowerCase();
+      var comingB=it.s==='coming'?'<span class="cl-b coming">Landing today</span>':'';
+      d.innerHTML='<div class="cl-badges"><span class="cl-b '+it.t+'">'+TRACK[it.t]+'</span><span class="cl-b loc">'+loc+'</span><span class="cl-b cat">'+CAT[it.c][0]+'</span>'+comingB+'</div><div class="cl-x">'+it.x+'</div>';
+      listEl.appendChild(d);
+    });
+    var items=Array.prototype.slice.call(listEl.children);
+
+    function apply(){
+      var shown=0;
+      items.forEach(function(d){
+        var okT=!f.track.size||f.track.has(d.dataset.t);
+        var okU=!f.unit.size||f.unit.has(d.dataset.u);
+        var okC=!f.cat.size||f.cat.has(d.dataset.c);
+        var okS=!f.status.size||f.status.has(d.dataset.s);
+        var okQ=!f.q||d.dataset.txt.indexOf(f.q)>-1;
+        var vis=okT&&okU&&okC&&okS&&okQ;
+        d.classList.toggle('hidden',!vis);
+        if(vis)shown++;
+      });
+      countEl.textContent='Showing '+shown+' of '+items.length+' changes';
+    }
+
+    document.querySelectorAll('.cl-chip').forEach(function(ch){
+      ch.addEventListener('click',function(){
+        var g=ch.dataset.g, v=ch.dataset.v;
+        if(f[g].has(v)){ f[g].delete(v); ch.classList.remove('on'); }
+        else{ f[g].add(v); ch.classList.add('on'); }
+        apply();
+      });
+    });
+    var search=document.getElementById('cl-search');
+    search.addEventListener('input',function(){ f.q=search.value.trim().toLowerCase(); apply(); });
+    document.getElementById('cl-clear').addEventListener('click',function(){
+      f={track:new Set(),unit:new Set(),cat:new Set(),status:new Set(),q:''};
+      search.value='';
+      document.querySelectorAll('.cl-chip.on').forEach(function(c){ c.classList.remove('on'); });
+      apply();
+    });
+    apply();
+  })();
+</script>
+</body>
+</html>
