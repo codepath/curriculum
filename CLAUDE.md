@@ -36,12 +36,13 @@ Two page patterns are in use:
 ## Adding a new page
 
 1. Create the file — prefer `newpage/index.html` for a clean URL.
-2. If it should be discoverable from the hub, add a `.page-card` link to it in the root `index.html`. **Not every page has to be linked** — e.g. `cir-curriculum-2026.html` (an instructor briefing) is intentionally unlisted on the landing page.
+2. **Do NOT link the new page from the landing page (`index.html`).** Every page is unlisted by default — reachable only via its direct URL. Only add a `.page-card` link to the hub when the user **explicitly** asks you to list/link/feature that page. When in doubt, leave it unlisted. (e.g. `cir-curriculum-2026.html` is intentionally unlisted.)
 3. Commit and push to `main`. Verify the new URL returns 200.
 
 ## Before you publish — reminders
 
 - **Everything here is public.** Do not commit anything not cleared for external eyes (internal notes, unreleased plans, PII, credentials).
+- **Pages are unlisted by default.** Never add a page to the landing page (`index.html`) unless the user explicitly asks. Publishing a page does not imply linking it.
 - These pages are shared with partners as evergreen links, so **avoid renaming or moving files that are already circulating** — it breaks the shared URL. Add redirects or keep the old path if a move is unavoidable.
 
 ## Roadmap
