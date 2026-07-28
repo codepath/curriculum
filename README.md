@@ -10,6 +10,9 @@ A home for CodePath's shareable curriculum pages, published to GitHub Pages as e
 |------|------|-----|
 | Landing | [`index.html`](index.html) | https://codepath.github.io/curriculum/ |
 | Course Catalog | [`catalog/index.html`](catalog/index.html) | https://codepath.github.io/curriculum/catalog/ |
+| CS1 with GenAI — Year 2 Instructor Briefing | [`cir-curriculum-2026.html`](cir-curriculum-2026.html) | https://codepath.github.io/curriculum/cir-curriculum-2026.html |
+
+> **Note:** everything in this repo is published publicly. See [`CLAUDE.md`](CLAUDE.md) for full conventions.
 
 ## How it works
 
