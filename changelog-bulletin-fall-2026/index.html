@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curriculum Changelog Bulletin · Fall 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B1C57; --green:#00C385; --ink:#2b2d55; --muted:#6b6f8a;
+    --bg:#f6f7fb; --card:#ffffff; --line:#e7e9f2;
+    --green-bg:#e7f9f1;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:15px;line-height:1.55;}
+  .topbar{height:5px;background:var(--green);}
+  .container{max-width:860px;margin:0 auto;padding:34px 22px 70px;}
+  .wordmark{font-family:'Space Mono',monospace;font-weight:700;color:var(--navy);
+    letter-spacing:.5px;font-size:13px;text-transform:uppercase;}
+  h1{font-family:'Space Mono',monospace;color:var(--navy);font-size:27px;margin:6px 0 8px;letter-spacing:.3px;}
+  .lede{color:var(--ink);font-size:15.5px;max-width:660px;margin:0 0 4px;}
+  .meta{color:var(--muted);font-size:13px;margin:10px 0 26px;}
+
+  .group{margin:0 0 30px;}
+  .group h2{font-family:'Space Mono',monospace;font-size:13px;text-transform:uppercase;
+    letter-spacing:1.2px;color:var(--muted);border-bottom:1px solid var(--line);
+    padding-bottom:7px;margin:0 0 12px;}
+
+  .course{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:15px 17px;margin-bottom:11px;box-shadow:0 1px 2px rgba(27,28,87,.04);}
+  .course .head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:5px;}
+  .code{font-family:'Space Mono',monospace;font-weight:700;color:var(--navy);font-size:15px;}
+  .name{color:var(--ink);font-weight:500;}
+  .th{display:inline-flex;align-items:baseline;gap:10px;text-decoration:none;}
+  .th:hover .code,.th:hover .name{color:var(--green);}
+  .ver{font-family:'Space Mono',monospace;font-size:11.5px;color:var(--muted);
+    border:1px solid var(--line);border-radius:20px;padding:1px 9px;}
+  .tag{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+    padding:2px 9px;border-radius:20px;margin-left:auto;white-space:nowrap;}
+  .tag.upd{background:var(--green-bg);color:#08805a;}
+  .tag.none{background:#eef0f6;color:var(--muted);}
+  .summary{font-size:14px;color:var(--ink);margin:2px 0 10px;}
+  .summary.none{color:var(--muted);font-style:italic;}
+
+  .links{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;}
+  .links .lbl{font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;
+    letter-spacing:.6px;color:var(--muted);}
+  .links .sep{color:#c7cbdb;}
+  .cl{font-family:'Space Mono',monospace;font-size:12.5px;color:var(--navy);text-decoration:none;
+    border-bottom:1px solid rgba(0,195,133,.5);padding-bottom:1px;}
+  .cl:hover{color:var(--green);border-color:var(--green);}
+  sup{color:var(--green);font-weight:700;}
+
+  .fn{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:12.5px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<div class="container">
+  <div class="wordmark">CodePath · Curriculum</div>
+  <h1>Curriculum Changelog Bulletin — Fall 2026</h1>
+  <p class="lede">What's improved in each course since Spring 2026.</p>
+  <p class="meta">Routine bug fixes and maintenance are omitted for brevity. · Compiled 2026-07-28.</p>
+
+  <!-- AI -->
+  <div class="group">
+    <h2>AI Engineering</h2>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/ai110/syllabus.md" target="_blank" rel="noopener"><span class="code">AI110</span><span class="name">Foundations of AI Engineering</span></a><span class="ver">v1.0.7</span><span class="tag upd">Updated</span></div>
+      <p class="summary">Install instructions now cover both GitHub Copilot and Claude Code; AI guidance moved to vendor-agnostic, technically accurate language; the Module 3 sentiment-analysis lab gained an ethics expansion; and a reference-solution exemplar repo was added to each of the five Tinker labs.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1_dqJZkuVs6zzFEdZ3c8pFeYBsy3lxqovdbfLVabKBBM/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1_dqJZkuVs6zzFEdZ3c8pFeYBsy3lxqovdbfLVabKBBM/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/ai201/syllabus.md" target="_blank" rel="noopener"><span class="code">AI201</span><span class="name">Applications of AI Engineering</span></a><span class="ver">v1.0.2</span><span class="tag upd">Updated</span></div>
+      <p class="summary">Added a "Flask in 20 Minutes" primer page and expanded the Project 4 page with a rubric, deliverables, and resources; added the five Mixtape open-issue descriptions to the Project 5 page.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1Ii6Lo6V1vRfz2umhc5vrjKkMRnORzzi9-pTehB9z77c/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1Ii6Lo6V1vRfz2umhc5vrjKkMRnORzzi9-pTehB9z77c/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/ai301/syllabus.md" target="_blank" rel="noopener"><span class="code">AI301</span><span class="name">AI Open Source Capstone</span></a><span class="ver">v1.1.3</span><span class="tag upd">Updated</span></div>
+      <p class="summary">The specific host-platform requirement was removed, delivery was adjusted to scale across all formats (more flexible check-ins, optional standups, no Loom video submissions), and the grading page was reworked to a pass-by-phase model with a new grading FAQ.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1NtrXOLhReioRton9xp7r9cP_ElwcV_4GYa3VT6lzeFI/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1NtrXOLhReioRton9xp7r9cP_ElwcV_4GYa3VT6lzeFI/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+  </div>
+
+  <!-- Cyber -->
+  <div class="group">
+    <h2>Cybersecurity</h2>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/cyb101/syllabus.md" target="_blank" rel="noopener"><span class="code">CYB101</span><span class="name">Intro to Cybersecurity</span></a><span class="ver">v1.1.1</span><span class="tag upd">Updated</span></div>
+      <p class="summary">Units 3 and 6 (Password Security, Steganography) were rebuilt as self-contained open-source Docker labs with no Azure Labs or VM required, and prework<sup>*</sup> moved to an in-browser Self-Check tool.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1IO3q7f4Xfs9AZnPfydzRWDe0MargFFQvrvJPD4o6G2w/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1IO3q7f4Xfs9AZnPfydzRWDe0MargFFQvrvJPD4o6G2w/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/cyb102/syllabus.md" target="_blank" rel="noopener"><span class="code">CYB102</span><span class="name">Intermediate Cybersecurity</span></a><span class="ver">v1.1.3</span><span class="tag upd">Updated</span></div>
+      <p class="summary">Labs 5 and 7 (Splunk, Threat Hunting) were rebuilt as self-contained open-source Docker labs with no Azure VM; Key Takeaways sections were added and overviews strengthened across all 7 labs and 7 projects; a new "Red Team Reconnaissance" FTP directory-traversal stretch challenge was added to Project 3; and prework<sup>*</sup> moved to an in-browser Self-Check tool.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/19APJ1HwE-ZFj4SWyoBxMeTDi7U9jnyQL_Km-WEW-EvY/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/19APJ1HwE-ZFj4SWyoBxMeTDi7U9jnyQL_Km-WEW-EvY/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+  </div>
+
+  <!-- TIP -->
+  <div class="group">
+    <h2>Technical Interview Prep</h2>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/tip101/syllabus.md" target="_blank" rel="noopener"><span class="code">TIP101</span><span class="name">Intro to Technical Interview Prep</span></a><span class="ver">v1.0.1</span><span class="tag upd">Updated</span></div>
+      <p class="summary">Assessment submission requirements were clarified regarding <code>print()</code> statements in Python code.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1NOn0ks1FkxL-vUfVp-lYdDpAxoqpd3dZQjD0RBTr3dU/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1NOn0ks1FkxL-vUfVp-lYdDpAxoqpd3dZQjD0RBTr3dU/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/tip102/syllabus.md" target="_blank" rel="noopener"><span class="code">TIP102</span><span class="name">Intermediate Technical Interview Prep</span></a><span class="ver">v1.0.2</span><span class="tag upd">Updated</span></div>
+      <p class="summary">Assessment submission requirements were clarified regarding <code>print()</code> statements, and unit overviews were restructured to split lecture-session goals from breakout / problem-set (HackerRank) goals.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1aruT96biS2Q0STrqjLOZCFW1dPzASjsKgbB091RIYNI/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1aruT96biS2Q0STrqjLOZCFW1dPzASjsKgbB091RIYNI/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/tip103/syllabus.md" target="_blank" rel="noopener"><span class="code">TIP103</span><span class="name">Advanced Technical Interview Prep</span></a><span class="ver">v1.0.2</span><span class="tag upd">Updated</span></div>
+      <p class="summary">Assessment submission requirements were clarified regarding <code>print()</code> statements, and unit overviews were restructured to split lecture-session goals from breakout / problem-set (HackerRank) goals.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1o53-4xrsLYXxfWz8qh3T9cjipMsMC7PewNkQnhrL2rs/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1o53-4xrsLYXxfWz8qh3T9cjipMsMC7PewNkQnhrL2rs/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+  </div>
+
+  <!-- Web -->
+  <div class="group">
+    <h2>Web Development</h2>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/web101/syllabus.md" target="_blank" rel="noopener"><span class="code">WEB101</span><span class="name">Intro to Web Development</span></a><span class="ver">v1.0</span><span class="tag none">Minor fixes only</span></div>
+      <p class="summary none">No changelog-level enhancements this term.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/127EfpzXC9wLyPTcYXaqJjnrrsqlWc3lyFS3uQo1FOv0/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/127EfpzXC9wLyPTcYXaqJjnrrsqlWc3lyFS3uQo1FOv0/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/web102/syllabus.md" target="_blank" rel="noopener"><span class="code">WEB102</span><span class="name">Intermediate Web Development</span></a><span class="ver">v1.0.1</span><span class="tag upd">Updated</span></div>
+      <p class="summary">Labs 5 and 6 were upgraded with a new API, rewritten fetch logic, and component architecture, plus new starter code for Lab 6.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1Vc1PDVI7D7Wl_duxFJNt0DWxsA5Jk3bqMWhKsSHd2bo/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1Vc1PDVI7D7Wl_duxFJNt0DWxsA5Jk3bqMWhKsSHd2bo/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/web103/syllabus.md" target="_blank" rel="noopener"><span class="code">WEB103</span><span class="name">Advanced Web Development</span></a><span class="ver">v1.0</span><span class="tag none">Minor fixes only</span></div>
+      <p class="summary none">No changelog-level enhancements this term.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1sqNmcglg3wM-ih2nT7F1QmdBoJfO6tWDygG04vxkOzI/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1sqNmcglg3wM-ih2nT7F1QmdBoJfO6tWDygG04vxkOzI/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+  </div>
+
+  <!-- Android -->
+  <div class="group">
+    <h2>Android Development</h2>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/and101/syllabus.md" target="_blank" rel="noopener"><span class="code">AND101</span><span class="name">Intro to Android Development</span></a><span class="ver">v1.0</span><span class="tag none">Minor fixes only</span></div>
+      <p class="summary none">No changelog-level enhancements this term.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/10To95MYnixWigCgft6uTrUUFGQOkc-Hafqqif8ihl_8/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/10To95MYnixWigCgft6uTrUUFGQOkc-Hafqqif8ihl_8/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/and102/syllabus.md" target="_blank" rel="noopener"><span class="code">AND102</span><span class="name">Intermediate Android Development</span></a><span class="ver">v1.0</span><span class="tag none">Minor fixes only</span></div>
+      <p class="summary none">No changelog-level enhancements this term.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1jURbGdDhH3wYBe44gH_5H_nUSHkHdan8pv3k4OMhFbE/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1jURbGdDhH3wYBe44gH_5H_nUSHkHdan8pv3k4OMhFbE/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div class="group">
+    <h2>iOS Development</h2>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/ios101/syllabus.md" target="_blank" rel="noopener"><span class="code">IOS101</span><span class="name">Intro to iOS Development</span></a><span class="ver">v1.0</span><span class="tag none">Minor fixes only</span></div>
+      <p class="summary none">No changelog-level enhancements this term.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1VvV2Y3W8hvSnDupcHvXJbh4mlhTnHA-P7CaQjiCo8UY/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1VvV2Y3W8hvSnDupcHvXJbh4mlhTnHA-P7CaQjiCo8UY/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+
+    <div class="course">
+      <div class="head"><a class="th" href="https://courses.codepath.org/snippets/ios102_swiftUI/syllabus.md" target="_blank" rel="noopener"><span class="code">IOS102</span><span class="name">Intermediate iOS Development with SwiftUI</span></a><span class="ver">v1.0</span><span class="tag none">Minor fixes only</span></div>
+      <p class="summary none">No changelog-level enhancements this term.</p>
+      <div class="links"><span class="lbl">View Changelog</span><a class="cl" href="https://docs.google.com/document/d/1wcwHo8Kzi5DuwZQWTMWvwABoPOfuq7G-7rPeuv6DGHk/preview?tab=t.tekji436tc5u" target="_blank" rel="noopener">Direct-to-Student ↗</a><span class="sep">·</span><a class="cl" href="https://docs.google.com/document/d/1wcwHo8Kzi5DuwZQWTMWvwABoPOfuq7G-7rPeuv6DGHk/preview?tab=t.es92fus8nxhs" target="_blank" rel="noopener">University-Partner ↗</a></div>
+    </div>
+  </div>
+
+  <div class="fn">
+    <sup>*</sup> Prework is only required for Direct-to-Student programs.
+  </div>
+
+  <p style="margin-top:18px;font-size:13px;"><a class="cl" href="https://courses.codepath.org/snippets/info/syllabi" target="_blank" rel="noopener">View all course syllabi ↗</a></p>
+</div>
+</body>
+</html>
