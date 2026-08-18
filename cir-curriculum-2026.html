@@ -401,17 +401,17 @@
         <p class="sub">Live demo. Your full diff of what changed is in the <b>Changelogs</b> tab.</p>
       </div>
 
-      <!-- 12 · Coming for Java (landing today) -->
+      <!-- 12 · Java complete -->
       <div class="slide" data-slide>
-        <p class="eyebrow">Java · Landing today</p>
-        <h2>A few Java pieces land by end of day</h2>
+        <p class="eyebrow">Java · Complete</p>
+        <h2>The Java track is complete</h2>
         <hr class="rule">
-        <p>The Java track is nearly complete. Two pieces are still in flight and will be in the v2 base by <b>end of day today</b>:</p>
+        <p>The last two pieces have landed and are in the v2 base:</p>
         <div class="coming">
-          <div class="coming-item"><span class="coming-badge">Landing today</span><span class="what">The four Java unit exams</span></div>
-          <div class="coming-item"><span class="coming-badge">Landing today</span><span class="what">Unit 4.3 Lab and Homework (Image files)</span></div>
+          <div class="coming-item"><span class="coming-badge">Landed</span><span class="what">The four Java unit exams</span></div>
+          <div class="coming-item"><span class="coming-badge">Landed</span><span class="what">Unit 4.3 Lab and Homework (Image files)</span></div>
         </div>
-        <p class="sub">This is exactly why you may want to import from the v2 base again later: once these land, pull them straight into your course with Import Lesson, no rebuilding. They're flagged "Landing today" in the Changelogs tab.</p>
+        <p class="sub">If you built your course before these landed, pull them straight in with Import Lesson from the v2 base, no rebuilding. Both are listed in the Changelogs tab.</p>
       </div>
 
       <!-- 13 · Support -->
@@ -473,9 +473,6 @@
         <button class="cl-chip" data-g="cat" data-v="java">Java idioms</button>
         <button class="cl-chip" data-g="cat" data-v="edstem">Decks &amp; setup</button>
         <button class="cl-chip" data-g="cat" data-v="deferred">Deferred</button>
-      </div>
-      <div class="cl-group"><span class="cl-glabel">Status</span>
-        <button class="cl-chip coming-chip" data-g="status" data-v="coming">Landing soon</button>
       </div>
     </div>
   </div>
@@ -641,9 +638,11 @@
       {t:'java',u:4,m:'M1-2',c:'clarity',x:`Added point-of-use scaffolding for checked exceptions so <code>throws Exception</code> is briefly explained where it first appears.`},
       {t:'java',u:4,m:'M3',c:'java',surf:'slides',x:`Corrected the image-files lecture (4.3.1): replaced Python terminology with the real Java class name (<code>ImageIO</code>) and fixed the crop explanation for <code>getSubimage(x, y, width, height)</code>.`},
       {t:'java',u:4,m:'M3',c:'edstem',surf:'edstem',x:`Pointed the EdStem image-files lessons at the correct decks and kept the module on its standard-library Java approach (helper-library modernization deferred).`},
-      {t:'java',u:4,m:'M3',c:'edstem',s:'coming',surf:'edstem',x:`<b>Landing soon:</b> the Java <b>Unit 4.3 Lab and Homework (Image files)</b> are being built in EdStem now and will be in the v2 base soon. Re-import from the base to pull them once they land.`},
+      {t:'java',u:4,m:'M3',c:'edstem',surf:'edstem',x:`The Java <b>Unit 4.3 Lab and Homework (Image files)</b> are built and live in the v2 base. Re-import from the base to pull them into your course.`},
+      {t:'java',u:4,m:'M3',c:'autograder',surf:'edstem',x:`Added JUnit autograders to every code exercise in the Unit 4.3 Lab and Homework; previously these had no Java tests at all. Writing them surfaced four conversion errors, now fixed: a question asking what came from <code>javax.swing</code> for code that uses <code>java.awt.Desktop</code>, an answer key that answered a different question than its rubric graded, a Parson's puzzle missing the <code>main</code> declaration needed to assemble it, and a method rename that left the autograder with no stable name to call.`},
       {t:'java',u:4,m:'Capstone',c:'correctness',x:`Rewrote the Unit 4 capstone to match what the course teaches: imports the CSV with <code>BufferedReader</code>/<code>Scanner</code> and <code>split(",")</code> into a nested <code>ArrayList&lt;String[]&gt;</code>, removing external-library dependencies.`},
-      {t:'java',u:4,m:'Exams',c:'edstem',s:'coming',surf:'edstem',x:`<b>Landing soon:</b> the <b>four Java unit exams</b> are being built in EdStem from the revised source curriculum and will be in the v2 base soon. Re-import from the base to pull them once they land.`},
+      {t:'java',u:4,m:'Exams',c:'edstem',surf:'edstem',x:`The <b>four Java unit exams</b> are built in EdStem from the revised source curriculum and are live in the v2 base. Re-import from the base to pull them.`},
+      {t:'java',u:4,m:'Exams',c:'correctness',surf:'edstem',x:`Audited the four Java exams for leftover Python. Exam 2 had three holdovers corrected: a question still written in Python, an explanation referring to <code>elif</code>, and a Parson's distractor written in Python rather than Java.`},
       {t:'java',u:4,m:'M3',c:'deferred',x:`Unit 4 image-module modernization deferred: a helper-library rework was set aside this cycle and the partial slides rolled back, so lecture, activity, lab, and homework stay aligned on the standard-library approach. Open to revisiting mid-semester.`},
       {t:'java',u:0,m:'All',c:'deferred',x:`Lab-and-Homework duplication (course-wide) deferred to next year's pass. Does not block the Java launch.`},
       {t:'java',u:1,m:'M4',c:'deferred',x:`Five Unit 1 Module 4 activity enhancements from the Python track were intentionally not mirrored into Java (discretionary parity, not launch-critical).`}
