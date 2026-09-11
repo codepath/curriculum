@@ -11,6 +11,7 @@
     --green:#00C385; --green-deep:#04795a; --green-bg:#e3f9f0;
     --coral:#FF5A5F; --coral-deep:#c9353a; --coral-bg:#ffeceb;
     --violet:#6C5CE7; --violet-bg:#eceffb;
+    --blue:#02BCFF; --blue-deep:#0A6FB0; --blue-bg:#e6f5fe;
     --sun:#FFC93C; --sun-bg:#fff6dd;
     --ink:#2b2d55; --muted:#6b6f8a; --card:#fff; --line:#e7e9f2;
     --mono:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -201,6 +202,21 @@
     background:linear-gradient(135deg,#d4f7e9 0%,var(--green-bg) 100%);
     box-shadow:0 6px 18px -8px rgba(0,195,133,.75);
   }
+  /* Chaser intent in the outstanding box: green for today, blue for day one.
+     "Not sure yet" is deliberately unstyled so it lands on the same quiet
+     grey as "Not yet" above. */
+  .ans button[data-c=eod]{color:var(--green-deep);border-color:#b6ecd7;font-weight:500;}
+  .ans button[data-c=eod]:hover{border-color:var(--green);color:var(--green-deep);}
+  .ans button[data-c=eod][aria-pressed=true]{
+    border-color:var(--green);color:#08301f;
+    background:linear-gradient(135deg,#d4f7e9 0%,var(--green-bg) 100%);
+  }
+  .ans button[data-c=dayone]{color:var(--blue-deep);border-color:#bfe6fb;font-weight:500;}
+  .ans button[data-c=dayone]:hover{border-color:var(--blue);color:var(--blue-deep);}
+  .ans button[data-c=dayone][aria-pressed=true]{
+    border-color:var(--blue);color:#07304a;
+    background:linear-gradient(135deg,#d3edfd 0%,var(--blue-bg) 100%);
+  }
   .ans button.pop{animation:pop .42s cubic-bezier(.2,1.6,.35,1);}
   @keyframes pop{
     0%{transform:scale(1);}
@@ -322,8 +338,8 @@
 
   <!-- reward -->
   <section class="card" id="reward" hidden>
-    <div class="rowhead"><p class="eyebrow">Your card</p><h2>Share with your network</h2></div>
-    <p class="sub">Select a line, click Download, and get LinkedIn-ready proof that you've started the journey.</p>
+    <div class="rowhead"><p class="eyebrow">Your card</p><h2>Get your graphic</h2></div>
+    <p class="sub">Choose your tagline, then download your graphic and share with your LinkedIn network!</p>
     <div class="chips" id="eyebrowPick"></div>
     <div class="cardwrap"><canvas id="badge" width="1080" height="1080"></canvas></div>
     <button class="btn primary" id="download">Download</button>
@@ -591,11 +607,18 @@ function buildRecap(){
   CHASER.forEach(function(ch){
     var o=document.createElement("button");
     o.type="button"; o.textContent=ch.label;
+    o.setAttribute("data-c", ch.id);
     o.setAttribute("aria-pressed", state.chaser === ch.id ? "true" : "false");
     o.addEventListener("click", function(){
       [].forEach.call(ca.children, function(x){ x.setAttribute("aria-pressed","false"); });
       o.setAttribute("aria-pressed","true");
       state.chaser = ch.id;
+      /* same reward as "I did this!" — committing to today earns the confetti */
+      if (ch.id === "eod"){
+        o.classList.remove("pop"); void o.offsetWidth; o.classList.add("pop");
+        var r = o.getBoundingClientRect();
+        burst(r.left + r.width/2, r.top + r.height/2);
+      }
     });
     ca.appendChild(o);
   });
