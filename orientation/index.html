@@ -190,8 +190,12 @@
   }
   .ans button:hover{transform:translateY(-1px);border-color:#cfd3ea;color:var(--ink);}
   .ans button[data-a=yes]:hover{border-color:var(--green);color:var(--green-deep);}
-  .ans button[aria-pressed=true]{border-color:var(--violet);background:var(--violet-bg);
-                                 color:var(--navy);font-weight:600;}
+  /* Recorded, not celebrated. Grey-but-solid so "Not yet" reads as noted
+     rather than judged; only the affirmative gets colour and lift. */
+  .ans button[aria-pressed=true]{
+    border-color:#cfd3ea;background:#eef0f6;
+    color:var(--navy);font-weight:500;box-shadow:none;
+  }
   .ans button[aria-pressed=true][data-a=yes]{
     border-color:var(--green);color:#08301f;
     background:linear-gradient(135deg,#d4f7e9 0%,var(--green-bg) 100%);
@@ -246,7 +250,7 @@
   </div>
 
   <h1>Check in to CodePath <span class="wave">✈️</span></h1>
-  <p class="lede">You're almost there. Answer a few quick questions to check in and get started on your journey, then download a <strong>social media graphic</strong> you can share to tell your network what you've started.</p>
+  <p class="lede">You're almost there. Answer a few quick questions to check in for your journey, then <strong>get your graphic</strong> to share the news.</p>
   <p class="lede sub2">If you're taking more than one class, complete this process more than once.</p>
 
   <!-- STEP 1: course -->
@@ -387,7 +391,7 @@ var ITEMS = [
 ];
 
 var ANSWERS = [
-  { id:"yes",   label:"I did this" },
+  { id:"yes",   label:"I did this!" },
   { id:"kinda", label:"Kinda" },
   { id:"no",    label:"Not yet" }
 ];
