@@ -178,6 +178,7 @@
   .item input[type=text]::placeholder{color:#a7abc2;}
   .item input[type=text]:focus{outline:none;border-color:var(--violet);}
   .item .priv{font-size:12.5px;color:var(--muted);margin:8px 0 0;}
+  .item .txt u{text-underline-offset:2px;}
   .item .n{font-family:var(--mono);font-size:11px;color:var(--violet);font-weight:700;
            letter-spacing:.14em;margin-right:9px;}
   .ans{display:flex;gap:9px;flex-wrap:wrap;}
@@ -280,7 +281,7 @@
   <!-- STEP 2: the checklist -->
   <section class="card" id="c2" hidden>
     <div class="rowhead"><p class="eyebrow">Step 2 of 3</p><h2>Set yourself up</h2></div>
-    <p class="sub">Six things that make the difference. Answer honestly, there's no wrong answer.</p>
+    <p class="sub">Six things that make the difference. Take the time to do them now, in this session, and check them off as you go.</p>
     <div id="quiz"></div>
 
     <div id="recap"></div>
@@ -423,10 +424,11 @@ var PROMPT = {
   tip:   "One specific thing I am really looking forward to doing, building, or getting in this class is\u2026"
 };
 
+/* Labels take the pronoun so they agree with the number of outstanding items. */
 var CHASER = [
-  { id:"eod",    label:"I\u2019ll do these by end of day." },
-  { id:"dayone", label:"I\u2019ll do these before day one." },
-  { id:"unsure", label:"Not sure yet." }
+  { id:"eod",    label:function(it){ return "I\u2019ll do " + it + " by the end of today."; } },
+  { id:"dayone", label:function(it){ return "I\u2019ll do " + it + " before day one."; } },
+  { id:"unsure", label:function(){ return "Not sure yet."; } }
 ];
 
 /* Slot geometry as specified, in 1080 coords. Title top is pinned at 278 on
@@ -560,7 +562,17 @@ function buildItems(){
   var six=document.createElement("div"); six.className="item";
   var st=document.createElement("p"); st.className="txt";
   var sn=document.createElement("span"); sn.className="n"; sn.textContent="06";
-  st.appendChild(sn); st.appendChild(document.createTextNode(PROMPT[state.course.stream]));
+  st.appendChild(sn);
+  /* "specific thing" carries the whole ask, so it is underlined. Falls back to
+     plain text if a future stream prompt does not contain the phrase. */
+  (function(){
+    var ptxt = PROMPT[state.course.stream], mark = "specific thing";
+    var at = ptxt.indexOf(mark);
+    if (at < 0){ st.appendChild(document.createTextNode(ptxt)); return; }
+    st.appendChild(document.createTextNode(ptxt.slice(0, at)));
+    var u = document.createElement("u"); u.textContent = mark; st.appendChild(u);
+    st.appendChild(document.createTextNode(ptxt.slice(at + mark.length)));
+  })();
   var inp=document.createElement("input");
   inp.type="text"; inp.id="freetext"; inp.maxLength=140;
   inp.autocomplete="off"; inp.placeholder="Type whatever comes to mind";
@@ -599,16 +611,17 @@ function buildRecap(){
   }
 
   var ul = missed.map(function(i){ return "<li>" + ITEMS[i] + "</li>"; }).join("");
+  var pronoun = missed.length === 1 ? "this" : "these";
   box.innerHTML = "<h3>Still outstanding</h3><ul>" + ul + "</ul>" +
-    "<p style='margin:0 0 12px;font-size:14.5px'>Are you going to do " +
-    (missed.length === 1 ? "it" : "them") + " soon?</p>" +
+    "<p style='margin:0 0 12px;font-size:14.5px'>Hey you: Are you going to do " +
+    pronoun + " soon?</p>" +
     "<div class='ans' id='chaserAns'></div>";
   host.appendChild(box);
 
   var ca=$("chaserAns");
   CHASER.forEach(function(ch){
     var o=document.createElement("button");
-    o.type="button"; o.textContent=ch.label;
+    o.type="button"; o.textContent=ch.label(pronoun);
     o.setAttribute("data-c", ch.id);
     o.setAttribute("aria-pressed", state.chaser === ch.id ? "true" : "false");
     o.addEventListener("click", function(){
@@ -648,14 +661,19 @@ function makeConfirmation(id){
 }
 
 $("claim").addEventListener("click", function(){
-  var raw = $("mid").value.replace(/[^0-9A-Za-z]/g,"").toUpperCase();
+  var typed = $("mid").value;
+  /* Normalised form, used only where a canonical shape matters: the length
+     check, the confirmation code, and the pass. */
+  var raw = typed.replace(/[^0-9A-Za-z]/g,"").toUpperCase();
   if (raw.length < 4){
     $("midErr").textContent = "That doesn't look like a Member ID yet. It's at the top-right of your CodePath Hub.";
     $("mid").focus();
     return;
   }
   $("midErr").textContent = "";
-  state.memberId = raw;
+  /* The sheet gets exactly what the student typed, untouched, so an email
+     or a GitHub handle lands legible instead of stripped to letters. */
+  state.memberId = typed;
   state.conf = makeConfirmation(raw);
   $("conf").textContent = state.conf;
   $("mid").readOnly = true;
