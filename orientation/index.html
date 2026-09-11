@@ -48,6 +48,7 @@
   @keyframes fly{0%,100%{transform:translate(0,0) rotate(0);}50%{transform:translate(5px,-4px) rotate(6deg);}}
   .lede{font-size:17px;color:var(--ink);margin:0 0 10px;max-width:60ch;}
   .lede strong{font-weight:600;color:var(--navy);}
+  .lede.sub2{font-size:14.5px;color:var(--muted);margin-bottom:30px;}
   .ghost{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.04em;margin:0 0 30px;}
 
   .card{
@@ -162,7 +163,8 @@
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
   .item{padding:18px 0;border-bottom:1px solid var(--line);}
   .item:last-child{border-bottom:0;}
-  .item .txt{font-size:15.5px;color:var(--ink);margin:0 0 12px;max-width:66ch;line-height:1.5;}
+  .item .txt{font-size:17px;font-weight:500;color:var(--navy);margin:0 0 16px;
+             max-width:64ch;line-height:1.5;}
   .item input[type=text]{
     font-family:var(--body);font-size:15px;font-weight:400;
     width:100%;max-width:520px;padding:12px 15px;
@@ -177,14 +179,32 @@
            letter-spacing:.14em;margin-right:9px;}
   .ans{display:flex;gap:9px;flex-wrap:wrap;}
   .ans button{
-    font-family:var(--body);font-size:14px;font-weight:500;padding:9px 16px;
-    border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--ink);
+    font-family:var(--body);font-size:14px;font-weight:400;padding:9px 16px;
+    border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--muted);
     cursor:pointer;transition:all .14s ease;
   }
-  .ans button:hover{transform:translateY(-1px);border-color:#cfd3ea;}
+  /* the affirmative reads as the one worth reaching for, before it is chosen */
+  .ans button[data-a=yes]{
+    font-size:15px;font-weight:600;color:var(--green-deep);
+    border-color:#b6ecd7;padding:10px 20px;
+  }
+  .ans button:hover{transform:translateY(-1px);border-color:#cfd3ea;color:var(--ink);}
+  .ans button[data-a=yes]:hover{border-color:var(--green);color:var(--green-deep);}
   .ans button[aria-pressed=true]{border-color:var(--violet);background:var(--violet-bg);
                                  color:var(--navy);font-weight:600;}
-  .ans button[aria-pressed=true][data-a=yes]{border-color:var(--green);background:var(--green-bg);}
+  .ans button[aria-pressed=true][data-a=yes]{
+    border-color:var(--green);color:#08301f;
+    background:linear-gradient(135deg,#d4f7e9 0%,var(--green-bg) 100%);
+    box-shadow:0 6px 18px -8px rgba(0,195,133,.75);
+  }
+  .ans button.pop{animation:pop .42s cubic-bezier(.2,1.6,.35,1);}
+  @keyframes pop{
+    0%{transform:scale(1);}
+    35%{transform:scale(1.11) rotate(-1.5deg);}
+    70%{transform:scale(.98);}
+    100%{transform:scale(1);}
+  }
+  @media(prefers-reduced-motion:reduce){ .ans button.pop{animation:none;} }
   #recap:not(:empty){margin-top:22px;}
   .recapbox{background:var(--sun-bg);border:1px solid #f2dfa8;border-left:4px solid var(--sun);
             border-radius:11px;padding:18px 20px;}
@@ -226,7 +246,8 @@
   </div>
 
   <h1>Check in to CodePath <span class="wave">✈️</span></h1>
-  <p class="lede">You're in. Answer a few quick questions to check in, and walk away with a <strong>graphic you can post</strong> announcing you've started.</p>
+  <p class="lede">You're almost there. Answer a few quick questions to check in and get started on your journey, then download a <strong>social media graphic</strong> you can share to tell your network what you've started.</p>
+  <p class="lede sub2">If you're taking more than one class, complete this process more than once.</p>
 
   <!-- STEP 1: course -->
   <section class="card" id="c1">
@@ -381,9 +402,9 @@ var PROMPT = {
 };
 
 var CHASER = [
-  { id:"soon",  label:"Yes, I\u2019ll do these soon" },
-  { id:"some",  label:"Some of them" },
-  { id:"unsure",label:"Not sure yet" }
+  { id:"eod",    label:"I\u2019ll do these by end of day." },
+  { id:"dayone", label:"I\u2019ll do these before day one." },
+  { id:"unsure", label:"Not sure yet." }
 ];
 
 /* Slot geometry as specified, in 1080 coords. Title top is pinned at 278 on
@@ -423,12 +444,14 @@ var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: r
 /* ---------- confetti ---------- */
 var cv=$("confetti"), cx=cv.getContext("2d"), bits=[], raf=null, killer=null;
 var COLORS=["#00C385","#6C5CE7","#FFC93C","#FF5A5F","#1B1C57"];
-function burst(){
+function burst(ox, oy){
   if (reduced) return;
   cv.style.display="block"; cv.width=innerWidth; cv.height=innerHeight; bits=[];
-  for (var i=0;i<130;i++) bits.push({
-    x:cv.width*(.25+Math.random()*.5), y:cv.height*.34+Math.random()*40,
-    vx:(Math.random()-.5)*11, vy:-(6+Math.random()*11),
+  var n = (ox === undefined) ? 130 : 46;
+  for (var i=0;i<n;i++) bits.push({
+    x: (ox === undefined) ? cv.width*(.25+Math.random()*.5) : ox + (Math.random()-.5)*40,
+    y: (oy === undefined) ? cv.height*.34+Math.random()*40  : oy + (Math.random()-.5)*14,
+    vx:(Math.random()-.5)*(ox===undefined?11:9), vy:-(ox===undefined?(6+Math.random()*11):(4+Math.random()*8)),
     w:5+Math.random()*7, h:4+Math.random()*6,
     rot:Math.random()*6.3, vr:(Math.random()-.5)*.34,
     c:COLORS[(Math.random()*COLORS.length)|0], life:1 });
@@ -496,6 +519,11 @@ function buildItems(){
         [].forEach.call(ans.children, function(x){ x.setAttribute("aria-pressed","false"); });
         o.setAttribute("aria-pressed","true");
         state.answers[qi]=a.id;
+        if (a.id === "yes"){
+          o.classList.remove("pop"); void o.offsetWidth; o.classList.add("pop");
+          var r = o.getBoundingClientRect();
+          burst(r.left + r.width/2, r.top + r.height/2);
+        }
         refresh();
       });
       ans.appendChild(o);
