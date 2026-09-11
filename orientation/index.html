@@ -417,11 +417,17 @@ var ANSWERS = [
 
 /* PLACEHOLDER per stream \u2014 Sar to supply the four variants.
    Answers are private: they go to the Form and are never rendered. */
+/* Per stream. "mark" is the run underlined in the rendered question, and has
+   to appear verbatim inside "text" or the underline quietly falls back off. */
 var PROMPT = {
-  web:   "One specific thing I am really looking forward to doing, building, or getting in this class is\u2026",
-  cyber: "One specific thing I am really looking forward to doing, building, or getting in this class is\u2026",
-  ai:    "One specific thing I am really looking forward to doing, building, or getting in this class is\u2026",
-  tip:   "One specific thing I am really looking forward to doing, building, or getting in this class is\u2026"
+  web:   { text:"One specific website feature I am really looking forward to building in this class is\u2026",
+           mark:"specific website feature" },
+  cyber: { text:"One specific security skill I am really looking forward to discovering in this class is\u2026",
+           mark:"specific security skill" },
+  ai:    { text:"One specific AI feature I am really looking forward to building in this class is\u2026",
+           mark:"specific AI feature" },
+  tip:   { text:"One specific data structure I am really looking forward to mastering in this class is\u2026",
+           mark:"specific data structure" }
 };
 
 /* Labels take the pronoun so they agree with the number of outstanding items. */
@@ -566,7 +572,7 @@ function buildItems(){
   /* "specific thing" carries the whole ask, so it is underlined. Falls back to
      plain text if a future stream prompt does not contain the phrase. */
   (function(){
-    var ptxt = PROMPT[state.course.stream], mark = "specific thing";
+    var q = PROMPT[state.course.stream], ptxt = q.text, mark = q.mark;
     var at = ptxt.indexOf(mark);
     if (at < 0){ st.appendChild(document.createTextNode(ptxt)); return; }
     st.appendChild(document.createTextNode(ptxt.slice(0, at)));
