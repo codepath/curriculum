@@ -244,7 +244,7 @@
     </div>
     <div class="meta">
       <div><span class="k">Term</span><span class="v">FALL 2026</span></div>
-      <div><span class="k">Departs</span><span class="v">SEP 13</span></div>
+      <div><span class="k">Departs</span><span class="v" id="departs">SEP 16</span></div>
       <div><span class="k">Status</span><span class="v">ON TIME</span></div>
     </div>
   </div>
@@ -294,7 +294,7 @@
         <div class="passgrid">
           <div><span class="k">Passenger</span><span class="v" id="paxName">—</span></div>
           <div><span class="k">Term</span><span class="v">Fall 2026</span></div>
-          <div><span class="k">Classes start</span><span class="v">Sep 13</span></div>
+          <div><span class="k">Classes start</span><span class="v" id="startDate">Sep 16</span></div>
         </div>
 
         <div class="field">
@@ -360,10 +360,10 @@ var SEMESTER = "Fall 2026";
    `correct` is unused today (nothing is graded) but is here so we can
    score later without restructuring. */
 var STREAMS = {
-  web:   { label:"Web Development",  a:"#02BCFF", b:"#0A84D8" },
-  cyber: { label:"Cybersecurity",    a:"#00C385", b:"#04795a" },
-  ai:    { label:"AI Engineering",   a:"#B243FF", b:"#7a1fb0" },
-  tip:   { label:"Interview Prep",   a:"#FE6901", b:"#c24f00" }
+  web:   { label:"Web Development",  a:"#02BCFF", b:"#0A84D8", startCaps:"SEP 16", startNice:"Sep 16" },
+  cyber: { label:"Cybersecurity",    a:"#00C385", b:"#04795a", startCaps:"SEP 16", startNice:"Sep 16" },
+  ai:    { label:"AI Engineering",   a:"#B243FF", b:"#7a1fb0", startCaps:"SEP 16", startNice:"Sep 16" },
+  tip:   { label:"Interview Prep",   a:"#FE6901", b:"#c24f00", startCaps:"SEP 15", startNice:"Sep 15" }
 };
 
 /* One link, eleven self-select entry points. Stream is derived, never asked. */
@@ -495,6 +495,8 @@ COURSES.forEach(function(c){
     $("stripTo").textContent = c.code;
     $("stubStream").textContent = c.code;
     $("routeTo").textContent = c.code;
+    $("departs").textContent = state.stream.startCaps;
+    $("startDate").textContent = state.stream.startNice;
     buildItems();
     reveal($("c2"));
   });
@@ -637,7 +639,7 @@ $("claim").addEventListener("click", function(){
   $("paxName").textContent = "#" + raw;
   $("passHead").textContent = "You're on the list";
   $("passSub").textContent = "Checked in";
-  $("claimmsg").innerHTML = "<strong style='color:#04795a'>Checked in.</strong> That's everything \u2014 see you Sep 13.";
+  $("claimmsg").innerHTML = "<strong style='color:#04795a'>Checked in.</strong> That's everything \u2014 see you " + state.stream.startNice + ".";
   submitOnce();
   burst();
   showReward();
