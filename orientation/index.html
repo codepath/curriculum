@@ -151,6 +151,8 @@
   .field input{font-family:var(--mono);font-size:15px;padding:11px 14px;border:1.5px solid var(--line);background:#fff;color:var(--navy);
                border-radius:9px;background:#fff;color:var(--navy);width:180px;}
   .microcopy{font-size:13.5px;color:var(--muted);margin:0;max-width:56ch;}
+  .microcopy a{color:var(--green-deep);font-weight:500;text-decoration:underline;text-underline-offset:2px;}
+  .microcopy a:hover{color:var(--navy);}
 
   label.fl{display:block;font-size:14px;font-weight:500;color:var(--navy);margin-bottom:7px;}
   select{font-family:var(--body);font-size:15px;padding:11px 14px;border:1.5px solid var(--line);
@@ -318,7 +320,7 @@
           <input id="mid" inputmode="numeric" placeholder="104283" autocomplete="off">
           <button class="btn primary" id="claim">Confirm</button>
         </div>
-        <p class="microcopy" id="claimmsg">Find it in the top right of your course portal.</p>
+        <p class="microcopy" id="claimmsg">You can find your Member ID at the top-right of your <a href="https://hub.codepath.org/home" target="_blank" rel="noopener">CodePath Hub</a></p>
         <div class="err" id="midErr"></div>
       </div>
 
@@ -648,7 +650,7 @@ function makeConfirmation(id){
 $("claim").addEventListener("click", function(){
   var raw = $("mid").value.replace(/[^0-9A-Za-z]/g,"").toUpperCase();
   if (raw.length < 4){
-    $("midErr").textContent = "That doesn't look like a Member ID yet. It's in the top right of your course portal.";
+    $("midErr").textContent = "That doesn't look like a Member ID yet. It's at the top-right of your CodePath Hub.";
     $("mid").focus();
     return;
   }
