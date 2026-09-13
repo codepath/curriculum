@@ -114,6 +114,8 @@
 
   .out-title{color:#fff;font-size:27px;font-weight:600;line-height:1.25;word-break:break-word;}
   .out-sub{color:rgba(255,255,255,.55);font-size:14.5px;margin-top:5px;}
+  /* the fixed rgb( and ) sit back so the numbers read as the live part */
+  .out-affix{opacity:.45;font-weight:400;}
   .out-mono{
     font-family:var(--mono);font-size:17px;color:var(--green);
     word-break:break-word;line-height:1.5;
@@ -501,7 +503,7 @@ const COURSES = {
     sub: "Activity 1. You spent the session restyling a live site, so here is one more edit.",
     label: "Set the page background to rebeccapurple, then open the Computed tab. What three numbers does background-color show?",
     hint: "DevTools turns the colour name into numbers.",
-    device: { kind:"browser", addr:"your site", render:"title", sub:"You changed this. On the real internet." },
+    device: { kind:"browser", addr:"your site", render:"swatch", sub:"You changed this. On the real internet." },
     affix: { before:"rgb(", after:")" },
     placeholder: "0, 0, 0",
     /* The old gate asked for the header the student set, which the activity
@@ -988,6 +990,51 @@ function renderScreen(){
 
   const empty = v === "";
   const shown = empty ? activePlaceholder() : v;
+
+  /* WEB101 is describing a colour, so the preview shows the whole rgb(...)
+     value and paints itself that colour as they type. Getting it right turns
+     the text rebeccapurple, which is the confirmation the activity never gave
+     them. Falls back to plain white for anything the browser will not parse. */
+  if (d.render === "swatch"){
+    const a = course.affix || {};
+    const wrap = document.createElement("div");
+    wrap.className = "out-title" + (empty ? " out-placeholder" : "");
+    const before = document.createElement("span");
+    before.className = "out-affix";
+    before.textContent = a.before || "";
+    const mid = document.createElement("span");
+    mid.textContent = shown;
+    const after = document.createElement("span");
+    after.className = "out-affix";
+    after.textContent = a.after || "";
+    wrap.appendChild(before); wrap.appendChild(mid); wrap.appendChild(after);
+
+    if (!empty){
+      const css = (a.before || "") + v + (a.after || "");
+      const probe = document.createElement("span");
+      probe.style.color = "";
+      probe.style.color = css;                 // invalid values leave it empty
+      if (probe.style.color){
+        wrap.style.color = css;
+        /* The screen is nearly black, so a dark value would read as a broken
+           render rather than as the colour they asked for. Keep the real
+           colour and lift it off the ground instead of faking a lighter one. */
+        const m = probe.style.color.match(/\d+/g);
+        if (m && m.length >= 3){
+          const lum = (0.2126*+m[0] + 0.7152*+m[1] + 0.0722*+m[2]) / 255;
+          if (lum < 0.22) wrap.style.textShadow = "0 0 1px rgba(255,255,255,.85), 0 0 14px rgba(255,255,255,.35)";
+        }
+      }
+    }
+    s.appendChild(wrap);
+    if (d.sub && !empty){
+      const p = document.createElement("div");
+      p.className = "out-sub";
+      p.textContent = d.sub;
+      s.appendChild(p);
+    }
+    return;
+  }
 
   if (d.render === "title"){
     const h = document.createElement("div");
