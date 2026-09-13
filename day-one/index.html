@@ -396,21 +396,13 @@
 
       <div>
         <div class="fieldblock">
-          <div class="fieldrow">
-            <div>
-              <label class="fl" for="stuName">Name</label>
-              <input type="text" id="stuName" maxlength="26" placeholder="Sar" autocomplete="off">
-            </div>
-            <div>
-              <label class="fl" for="stuPronouns">Pronouns</label>
-              <select id="stuPronouns">
-                <option value="">Leave off</option>
-                <option value="she/her">she/her</option>
-                <option value="he/him">he/him</option>
-                <option value="they/them">they/them</option>
-              </select>
-            </div>
-          </div>
+          <label class="fl" for="stuName">Name</label>
+          <input type="text" id="stuName" maxlength="26" placeholder="Sar" autocomplete="off">
+        </div>
+
+        <div class="fieldblock">
+          <label class="fl" id="pronounLabel">Pronouns</label>
+          <div class="chips" id="pronounChips" role="group" aria-labelledby="pronounLabel"></div>
         </div>
 
         <div class="fieldblock">
@@ -783,6 +775,12 @@ const FACE = { x0:0.31, y0:0.17, x1:0.70, y1:1.0 };
    NAME_MID and STAMP_MID are that diagonal; STAMP_MID is floored by the
    wordmark and the course line at the bottom of the frame. */
 const LAYOUTS = [{ id:"left", label:"Left column" }];
+const PRONOUNS = [
+  { id:"",           label:"Leave off" },
+  { id:"she/her",    label:"she/her" },
+  { id:"he/him",     label:"he/him" },
+  { id:"they/them",  label:"they/them" }
+];
 const NAME_MID  = 365;
 const STAMP_MID = 665;
 
@@ -1117,7 +1115,7 @@ buildToggle($("wordChips"), WORDS[streamOf(courseKey)].map(w => ({w})),
             o => state.word = o.w, o => o.w);
 
 $("stuName").addEventListener("input", e => { state.name = e.target.value; drawBackground(); });
-$("stuPronouns").addEventListener("change", e => { state.pronouns = e.target.value; drawBackground(); });
+buildToggle($("pronounChips"), PRONOUNS, p => state.pronouns = p.id, p => p.label);
 
 /* ============================================================
    CANVAS
