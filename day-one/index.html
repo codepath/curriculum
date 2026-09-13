@@ -432,8 +432,14 @@
         </div>
 
         <div class="fieldblock">
-          <label class="fl">Mark</label>
-          <div class="chips" id="markChips"></div>
+          <label class="fl">Your stamp</label>
+          <p class="hint">Pick what it says. It carries your course code and today's date either way.</p>
+          <div class="chips" id="wordChips"></div>
+        </div>
+
+        <div class="fieldblock">
+          <label class="fl">Foil</label>
+          <div class="chips" id="foilChips"></div>
         </div>
 
         <button class="btn primary" id="download">Download background</button>
@@ -471,7 +477,9 @@ const FORM = {
     course:   "entry.0000000002",
     answer:   "entry.0000000003",
     feel:     "entry.0000000004",
-    conf:     "entry.0000000005"
+    conf:     "entry.0000000005",
+    word:     "entry.0000000006",
+    foil:     "entry.0000000007"
   }
 };
 
@@ -729,7 +737,49 @@ const THEMES = [
   { id:"coral",  label:"Coral",  a:"#FF5A5F", b:"#c9353a" }
 ];
 
-const MARKS = ["✓","★","⚡","◆","∞",""];   // "" = no mark
+/* Foil gradients. Every one uses the SAME stop positions and the same
+   dark / light / bright / mid rhythm, so all four catch the light in the
+   same two places and read as the same object in different materials.
+   "text" variants lift the darks so the word stays legible on the ground. */
+const FOILS = [
+  { id:"gold",   label:"Gold",
+    ring:[[0,"#6b4f12"],[.10,"#f3da86"],[.19,"#fff8dc"],[.30,"#c9a53a"],[.44,"#5d440f"],
+          [.56,"#e9cf7c"],[.70,"#fffbe8"],[.83,"#b8912f"],[1,"#6b4f12"]],
+    text:[[0,"#b8912f"],[.12,"#ffeaa6"],[.24,"#fffdf0"],[.40,"#d9b44b"],[.55,"#9c7722"],
+          [.70,"#ffeaa6"],[.86,"#fffdf0"],[1,"#b8912f"]] },
+  { id:"rose",   label:"Rose gold",
+    ring:[[0,"#6e3a30"],[.10,"#f0b9a4"],[.19,"#fff0e6"],[.30,"#c9836e"],[.44,"#5f3128"],
+          [.56,"#eeb49e"],[.70,"#fff6ef"],[.83,"#b8735e"],[1,"#6e3a30"]],
+    text:[[0,"#c9836e"],[.12,"#ffd9c6"],[.24,"#fff8f3"],[.40,"#dda08a"],[.55,"#a9644f"],
+          [.70,"#ffd9c6"],[.86,"#fff8f3"],[1,"#c9836e"]] },
+  { id:"silver", label:"Silver",
+    ring:[[0,"#4e5563"],[.11,"#dfe6f0"],[.21,"#ffffff"],[.33,"#9aa3b5"],[.47,"#454b58"],
+          [.60,"#cfd7e4"],[.74,"#ffffff"],[.87,"#8b94a6"],[1,"#4e5563"]],
+    text:[[0,"#9aa3b5"],[.13,"#eef3fa"],[.26,"#ffffff"],[.42,"#b6bfd0"],[.58,"#8b94a6"],
+          [.74,"#eef3fa"],[.88,"#ffffff"],[1,"#9aa3b5"]] },
+  { id:"holo",   label:"Holographic",
+    ring:[[0,"#3A3AA8"],[.10,"#AFC0FF"],[.19,"#EFF0FF"],[.30,"#6E5EE8"],[.44,"#4A2E9E"],
+          [.56,"#D2C4FF"],[.70,"#F4ECFF"],[.83,"#8A5BD8"],[1,"#3A3AA8"]],
+    text:[[0,"#7E7BDC"],[.12,"#C9D3FF"],[.24,"#F2F3FF"],[.40,"#8E7CEE"],[.55,"#6F55C4"],
+          [.70,"#DCCFFF"],[.86,"#F6EFFF"],[1,"#7E7BDC"]] }
+];
+
+/* Identity markers, per stream. Keep these to 11 characters or fewer and
+   they render at full size; longer ones shrink and then wrap. */
+const WORDS = {
+  web:   ["WEB DEV","BUILDER","ENGINEER","IAMCODEPATH"],
+  cyber: ["CYBERSEC","DEFENDER","ENGINEER","IAMCODEPATH"],
+  ai:    ["AI POWERED","BUILDER","ENGINEER","IAMCODEPATH"],
+  tip:   ["UMPIRE","DEBUGGER","ENGINEER","IAMCODEPATH"]
+};
+
+/* Course keys carry their stream in the prefix. */
+function streamOf(key){
+  if (key.indexOf("web") === 0) return "web";
+  if (key.indexOf("cyb") === 0) return "cyber";
+  if (key.indexOf("tip") === 0) return "tip";
+  return "ai";
+}
 
 /* Zoom composites the speaker centre-frame, so every layout keeps its
    type outside that box. Values are fractions of the 1920x1080 frame. */
@@ -796,7 +846,8 @@ function activePlaceholder(){ return variant ? variant.placeholder : course.plac
 const state = {
   answer:"", memberId:"", conf:"",
   feel:50, feelTouched:false,
-  slots: course.madlib.slots.map(() => 0), showLine:true, layout:LAYOUTS[0], theme:THEMES[0], mark:MARKS[0],
+  slots: course.madlib.slots.map(() => 0), showLine:true, layout:LAYOUTS[0], theme:THEMES[0],
+  foil: FOILS[0], word: WORDS[streamOf(courseKey)][0],
   name:"", pronouns:"",
   tries:0, submitted:false
 };
@@ -1097,7 +1148,9 @@ function buildToggle(host, items, onPick, labelOf, styleOf){
 buildToggle($("layoutChips"), LAYOUTS, l => state.layout = l, l => l.label);
 buildToggle($("swatches"), THEMES, t => state.theme = t, null,
             t => "linear-gradient(135deg," + t.a + "," + t.b + ")");
-buildToggle($("markChips"), MARKS.map(m => ({m})), o => state.mark = o.m, o => o.m || "None");
+buildToggle($("foilChips"), FOILS, f => state.foil = f, f => f.label);
+buildToggle($("wordChips"), WORDS[streamOf(courseKey)].map(w => ({w})),
+            o => state.word = o.w, o => o.w);
 
 $("lineToggle").addEventListener("click", e => {
   const b = e.target.closest(".chip");
@@ -1143,6 +1196,10 @@ function drawBackground(){
 
   ({ left:drawLeft, top:drawTop, right:drawRight })[state.layout.id]();
   drawChrome();
+
+  /* Opposite the content, and outside FACE on whichever side it lands. */
+  const onLeft = state.layout.id === "right";
+  placeStamp(W * (onLeft ? 0.155 : 0.845), H * 0.44, W * 0.105);
 }
 
 /* --- layout: left / right column --- */
@@ -1157,7 +1214,6 @@ function drawColumn(side){
   const maxW = 452;
   const LH = 1.18;
 
-  ghostMark(right ? 430 : 1490, H * 0.48, 540, 0.038);
 
   const nm = state.name.trim();
   const pr = state.pronouns;
@@ -1212,7 +1268,6 @@ function drawColumn(side){
 /* --- layout: top strip --- */
 function drawTop(){
   const t = state.theme;
-  ghostMark(W * 0.5, H * 0.64, 640);
 
   const band = ctx.createLinearGradient(0,14,0,250);
   band.addColorStop(0,"rgba(11,12,38,.94)"); band.addColorStop(1,"rgba(11,12,38,0)");
@@ -1244,6 +1299,139 @@ function drawTop(){
 }
 
 /* --- shared pieces --- */
+/* ---------------- the stamp ----------------
+   Type is placed by measurement, never by guess: glyphs on the arc advance
+   by their own width, and the word is fitted to the chord of the inner
+   circle so it can never bleed past the ring. */
+function trackedWidth(c,text,sp){
+  if (!text.length) return 0;
+  let w = 0;
+  for (let i=0;i<text.length;i++) w += c.measureText(text[i]).width + sp;
+  return w - sp;
+}
+function tracked(c,text,cx,y,sp){
+  const prev = c.textAlign; c.textAlign = "left";
+  const w = trackedWidth(c,text,sp);
+  let x = cx - w/2;
+  for (let i=0;i<text.length;i++){
+    c.fillText(text[i],x,y);
+    x += c.measureText(text[i]).width + sp;
+  }
+  c.textAlign = prev; return w;
+}
+function fitSize(c,text,maxW,start,min,ratio){
+  let size = start;
+  while (size > min){
+    c.font = '700 ' + size + 'px "Space Mono", monospace';
+    if (trackedWidth(c,text,size*ratio) <= maxW) break;
+    size -= Math.max(0.5, start*0.02);
+  }
+  c.font = '700 ' + size + 'px "Space Mono", monospace';
+  return size;
+}
+function arcText(c,text,cx,cy,r,size,paint,bottom){
+  if (!text) return;
+  c.save();
+  c.fillStyle = paint;
+  c.font = '700 ' + size + 'px "Space Mono", monospace';
+  c.textAlign = "center"; c.textBaseline = "middle";
+  const gap = size*0.42, widths = [];
+  let totalPx = 0;
+  for (let i=0;i<text.length;i++){
+    const w = c.measureText(text[i]).width;
+    widths.push(w); totalPx += w + gap;
+  }
+  totalPx -= gap;
+  const totalAng = totalPx/r, dir = bottom ? -1 : 1;
+  const start = (bottom ? Math.PI/2 : -Math.PI/2) - dir*totalAng/2;
+  let acc = 0;
+  for (let i=0;i<text.length;i++){
+    const a = start + dir*((acc + widths[i]/2)/r);
+    c.save();
+    c.translate(cx + Math.cos(a)*r, cy + Math.sin(a)*r);
+    c.rotate(a + (bottom ? -Math.PI/2 : Math.PI/2));
+    c.fillText(text[i],0,0);
+    c.restore();
+    acc += widths[i] + gap;
+  }
+  c.restore();
+}
+function foilPaint(c,stops,cx,cy,r){
+  const g = c.createConicGradient
+    ? c.createConicGradient(-Math.PI*0.75, cx, cy)
+    : c.createLinearGradient(cx-r,cy-r,cx+r,cy+r);
+  stops.forEach(st => g.addColorStop(st[0], st[1]));
+  return g;
+}
+function stampDate(){
+  const d = new Date();
+  const M = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  return d.getDate() + " " + M[d.getMonth()] + " " + d.getFullYear();
+}
+function drawStamp(c,cx,cy,r){
+  const foil = state.foil;
+  const pRing = foilPaint(c,foil.ring,cx,cy,r);
+  const pText = foilPaint(c,foil.text,cx,cy,r);
+  const word = state.word, code = course.name, date = stampDate();
+
+  c.save();
+  c.translate(cx,cy); c.rotate(-7*Math.PI/180); c.translate(-cx,-cy);
+  c.globalAlpha = 0.96;
+
+  const ri = r*0.855;
+  c.strokeStyle = pRing; c.lineWidth = r*0.050;
+  c.beginPath(); c.arc(cx,cy,r,0,Math.PI*2); c.stroke();
+  c.lineWidth = r*0.020;
+  c.beginPath(); c.arc(cx,cy,ri,0,Math.PI*2); c.stroke();
+
+  arcText(c,"CODEPATH",cx,cy,r*0.70,r*0.105,pText,false);
+  arcText(c,date,cx,cy,r*0.70,r*0.092,pText,true);
+
+  c.fillStyle = pText; c.textBaseline = "middle";
+  const wordY = cy - r*0.05;
+  const half = Math.sqrt(Math.max(0, ri*ri - Math.pow(wordY-cy,2)));
+  const size = fitSize(c,word,half*2*0.80,r*0.28,r*0.10,0.06);
+  tracked(c,word,cx,wordY,size*0.06);
+
+  const codeSize = r*0.105;
+  c.font = '700 ' + codeSize + 'px "Space Mono", monospace';
+  const codeY = cy + r*0.30;
+  const codeW = trackedWidth(c,code,codeSize*0.05);
+  tracked(c,code,cx,codeY,codeSize*0.05);
+
+  const ruleStart = codeW/2 + r*0.07;
+  const ruleEnd = Math.sqrt(Math.max(0, ri*ri - Math.pow(codeY-cy,2))) - r*0.06;
+  if (ruleEnd > ruleStart + r*0.04){
+    c.strokeStyle = pText; c.lineWidth = r*0.016;
+    [-1,1].forEach(sgn => {
+      c.beginPath();
+      c.moveTo(cx + sgn*ruleStart, codeY);
+      c.lineTo(cx + sgn*ruleEnd, codeY);
+      c.stroke();
+    });
+  }
+  c.restore();
+}
+/* The stamp goes on its own layer so the specular sweep lands only on the
+   stamp and never on the background behind it. */
+function placeStamp(cx,cy,r){
+  const lay = document.createElement("canvas");
+  lay.width = W; lay.height = H;
+  const lx = lay.getContext("2d");
+  drawStamp(lx,cx,cy,r);
+  lx.save();
+  lx.globalCompositeOperation = "source-atop";
+  const g = lx.createLinearGradient(0,H,W,0);
+  g.addColorStop(0,"rgba(255,255,255,0)");
+  g.addColorStop(0.40,"rgba(255,255,255,0)");
+  g.addColorStop(0.50,"rgba(255,255,255,0.26)");
+  g.addColorStop(0.60,"rgba(255,255,255,0)");
+  g.addColorStop(1,"rgba(255,255,255,0)");
+  lx.fillStyle = g; lx.fillRect(0,0,W,H);
+  lx.restore();
+  ctx.drawImage(lay,0,0);
+}
+
 /* Course, semester and the wordmark are frame furniture: identical position
    in every layout, so only the student's own content moves. */
 function drawChrome(){
@@ -1254,27 +1442,15 @@ function drawChrome(){
 
 /* markSide names which side of the semester the mark sits on, independent
    of how the group itself is aligned. */
+/* markSide and markSize are vestigial: the stamp replaced the glyph mark.
+   Kept in the signature so the existing call sites stay untouched. */
 function eyebrowRow(x, y, align, markSide, semSize, markSize, text){
-  const sem = text;
-  const mark = state.mark;
   ctx.font = '700 ' + semSize + 'px "Space Mono", monospace';
-  const semW = ctx.measureText(sem).width;
-  ctx.font = '700 ' + markSize + 'px "Poppins", sans-serif';
-  const markW = mark ? ctx.measureText(mark).width : 0;
-
-  const gap = mark ? 18 : 0;
-  const total = semW + gap + markW;
-  const originX = (align === "right") ? x - total : x;
-  const semX  = (markSide === "left") ? originX + markW + gap : originX;
-  const markX = (markSide === "left") ? originX : originX + semW + gap;
-
+  const semW = ctx.measureText(text).width;
+  const semX = (align === "right") ? x - semW : x;
   ctx.textAlign = "left";
   ctx.fillStyle = state.theme.a;
-  ctx.font = '700 ' + semSize + 'px "Space Mono", monospace';
-  ctx.fillText(sem, semX, y);
-  if (!mark) return;
-  ctx.font = '700 ' + markSize + 'px "Poppins", sans-serif';
-  ctx.fillText(mark, markX, y);
+  ctx.fillText(text, semX, y);
 }
 
 function identity(x, y, align, maxW){
@@ -1343,17 +1519,7 @@ function drawLogo(x, y, w, align){
   ctx.drawImage(logoReady, lx, y - h, w, h);
 }
 
-function ghostMark(x, y, size, alpha){
-  if (!state.mark) return;
-  ctx.save();
-  ctx.globalAlpha = (alpha === undefined) ? 0.055 : alpha;
-  ctx.fillStyle = state.theme.a;
-  ctx.font = '700 ' + size + 'px "Poppins", sans-serif';
-  ctx.textAlign = "center"; ctx.textBaseline = "middle";
-  ctx.fillText(state.mark, x, y);
-  ctx.restore();
-  ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-}
+/* The oversized watermark glyph went with the mark. */
 
 function glow(x,y,r,color){
   const g = ctx.createRadialGradient(x,y,0,x,y,r);
@@ -1491,7 +1657,9 @@ function submitOnce(){
     course:   course.name,
     answer:   state.answer.trim(),
     feel:     String(state.feel),
-    conf:     state.conf
+    conf:     state.conf,
+    word:     state.word,
+    foil:     state.foil.id
   };
 
   if (!FORM.action){
