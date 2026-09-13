@@ -140,6 +140,22 @@
     background:#fff;color:var(--ink);width:100%;max-width:420px;
   }
   select{cursor:pointer;}
+  .answerwrap{display:flex;align-items:stretch;max-width:420px;}
+  .answerwrap.affixed{
+    border:1.5px solid var(--line);border-radius:10px;background:#fff;
+    transition:border-color .14s ease;
+  }
+  .answerwrap.affixed:focus-within{border-color:var(--violet);}
+  .answerwrap.affixed input[type=text]{
+    border:0;border-radius:0;padding-left:0;padding-right:0;max-width:none;flex:1 1 auto;
+  }
+  .answerwrap.affixed input[type=text]:focus{border-color:transparent;}
+  .affix{
+    display:flex;align-items:center;font-family:var(--mono);font-size:15px;
+    color:var(--muted);user-select:none;white-space:pre;
+  }
+  #affixBefore{padding:0 2px 0 14px;}
+  #affixAfter{padding:0 14px 0 2px;}
   input[type=text]:focus,select:focus{outline:none;border-color:var(--violet);}
   :focus-visible{outline:3px solid var(--violet);outline-offset:3px;border-radius:6px;}
   input.mono{font-family:var(--mono);letter-spacing:.06em;max-width:230px;}
@@ -337,7 +353,11 @@
     <div class="fieldblock">
       <label class="fl" for="answer" id="answerLabel">What does it say?</label>
       <p class="hint" id="answerHint"></p>
-      <input type="text" id="answer" autocomplete="off" spellcheck="false">
+      <div class="answerwrap" id="answerWrap">
+        <span class="affix" id="affixBefore" hidden></span>
+        <input type="text" id="answer" autocomplete="off" spellcheck="false">
+        <span class="affix" id="affixAfter" hidden></span>
+      </div>
     </div>
 
     <div class="nudge" id="nudgePanel" hidden>
@@ -479,10 +499,11 @@ const COURSES = {
     name: "WEB101",
     head: "I bent a real website",
     sub: "Activity 1. You spent the session restyling a live site, so here is one more edit.",
-    label: "Set the page background to rebeccapurple, then open the Computed tab. What does background-color show?",
-    hint: "DevTools turns the colour name into numbers. Copy what it shows.",
+    label: "Set the page background to rebeccapurple, then open the Computed tab. What three numbers does background-color show?",
+    hint: "DevTools turns the colour name into numbers.",
     device: { kind:"browser", addr:"your site", render:"title", sub:"You changed this. On the real internet." },
-    placeholder: "what the Computed tab shows",
+    affix: { before:"rgb(", after:")" },
+    placeholder: "0, 0, 0",
     /* The old gate asked for the header the student set, which the activity
        prints verbatim as a checklist instruction, so it was copyable without
        opening a browser. It also fired at the last checkpoint of three, could
@@ -495,7 +516,7 @@ const COURSES = {
        entirely. rebeccapurple appears nowhere in web101. Both the full value
        and the bare numbers are accepted, because DevTools shows the former
        and students often retype the latter. */
-    gate: { answer:["rgb(102, 51, 153)", "102 51 153"],
+    gate: { answer:"102, 51, 153",
             nudge:"Check you set it on the page background and read the Computed tab, not the Styles tab." },
     madlib: {
       frame: ["I ", 0, " the ", 1, "."],
@@ -903,6 +924,18 @@ $("s1Sub").textContent = course.sub;
 $("answerLabel").textContent = course.label;
 $("answerHint").textContent = course.hint;
 $("answer").placeholder = activePlaceholder();
+
+/* A course can pin fixed text either side of the box, so the student types
+   only the part that varies and the shape of the answer stops being a guess. */
+(function applyAffix(){
+  const a = course.affix;
+  if (!a) return;
+  $("answerWrap").classList.add("affixed");
+  if (a.before){ $("affixBefore").textContent = a.before; $("affixBefore").hidden = false; }
+  if (a.after){ $("affixAfter").textContent = a.after; $("affixAfter").hidden = false; }
+  const spoken = (a.before || "") + "value" + (a.after || "");
+  $("answer").setAttribute("aria-label", course.label + " Your answer sits inside " + spoken + ".");
+})();
 $("footSem").textContent = SEMESTER;
 document.title = course.name + " · Day One";
 
