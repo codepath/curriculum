@@ -645,18 +645,19 @@ const COURSES = {
   },
   tip103: {
     name: "TIP103",
-    head: "I counted the bounces",
-    sub: "Version 1, Problem 2. Tigger starts at 1, and every bouncy or flouncy adds one.",
-    label: "Run your function on the list below. What does final_value_after_operations() return?",
-    hint: "[\"flouncy\", \"bouncy\", \"bouncy\", \"trouncy\", \"bouncy\", \"bouncy\"]",
+    head: "I brought in the harvest",
+    sub: "Version 1, Problem 6. Your function walks the whole patch and counts what is ready.",
+    label: "Run your function on the patch below. What does harvest() return?",
+    hint: "[[\"c\",\"x\",\"c\",\"x\",\"c\"], [\"x\",\"c\",\"x\",\"c\",\"x\"], [\"c\",\"c\",\"x\",\"c\",\"c\"], [\"x\",\"x\",\"c\",\"x\",\"c\"]]",
     device: { kind:"terminal", addr:"python", prompt:"$ python3 main.py", render:"mono" },
     placeholder: "what your function returns",
-    /* Moved off tiggerfy. That problem strips t, i, gg and er, and two
-       reasonable implementations can disagree on inputs where removing one
-       match creates another, which would reject correct work once we stop
-       using the published example. This one has a single correct answer for
-       any list. Published examples are 2 and 4, so 5 is not on the page. */
-    gate: { answer:"5", nudge:"Tigger starts at 1, not 0. Count bouncy and flouncy up, trouncy and pouncy down." },
+    /* Moved off tiggerfy, which strips t, i, gg and er: two reasonable
+       implementations can disagree on inputs where removing one match creates
+       another, so a novel input could reject correct work. Problem 2 was the
+       first replacement but its answer is a single digit in a range of about
+       nine, so it was guessable. This one needs a nested walk and lands on a
+       two-digit count. The published example patch totals 6; this one is 11. */
+    gate: { answer:"11", nudge:"Walk every row and every column. Only cells holding a c count." },
     madlib: {
       frame: ["I ", 0, " ", 2, " ", 1, "."],
       slots: [
