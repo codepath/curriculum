@@ -603,13 +603,17 @@ const COURSES = {
   },
   tip101: {
     name: "TIP101",
-    head: "It all came together",
-    sub: "Problem 7. You combined everything from Problems 1 to 4 into one function.",
-    label: "What does what_time_is_it(12) return?",
-    hint: "Run it and copy what comes back.",
+    head: "I added it all up",
+    sub: "Version 1, Problem 13. Your function totals every number from 1 up to the value you hand it.",
+    label: "Run your function on a value the lab never gives you. What does sum_positive_range(14) return?",
+    hint: "Run it and copy what comes back. The lab's own example uses 6, so this one is not on the page.",
     device: { kind:"terminal", addr:"python", prompt:"$ python3 main.py", render:"mono" },
     placeholder: "what your function returns",
-    gate: { answer:"peanut butter jelly time 🥪", nudge:"Check the branch for hour 12. Run what_time_is_it(12) and copy the whole returned string." },
+    /* Problem 7 was the old gate. Its spec publishes all three return strings,
+       so every possible input maps to an answer already on the page. Problem 13
+       takes any stop value, so a novel input has an answer that is nowhere in
+       the curriculum. 1..14 sums to 105; the published example is 21. */
+    gate: { answer:"105", nudge:"Check that your range includes the stop value itself, not just the numbers below it." },
     madlib: {
       frame: ["I ", 0, " ", 2, " ", 1, "."],
       slots: [
@@ -622,12 +626,14 @@ const COURSES = {
   tip102: {
     name: "TIP102",
     head: "I built the loop",
-    sub: "Problem 5. You added the jars up by hand, with sum() off the table.",
-    label: "What does sum_honey([2, 3, 4, 5]) return?",
-    hint: "Run it and copy what comes back.",
+    sub: "Version 1, Problem 5. You added the jars up by hand, with sum() off the table.",
+    label: "Run your function on a list the lab never gives you. What does sum_honey([12, 7, 31, 5]) return?",
+    hint: "Run it and copy what comes back. The lab's own examples use different jars, so this one is not on the page.",
     device: { kind:"terminal", addr:"python", prompt:"$ python3 main.py", render:"mono" },
     placeholder: "what your function returns",
-    gate: { answer:"14", nudge:"Check your accumulator. It should start at 0 and add every element of the list." },
+    /* Any correct accumulator agrees on this, which is what makes it a safe
+       novel input. Published examples are 14 and 0. */
+    gate: { answer:"55", nudge:"Check your accumulator. It should start at 0 and add every element of the list." },
     madlib: {
       frame: ["I ", 0, " ", 2, " ", 1, "."],
       slots: [
@@ -639,16 +645,18 @@ const COURSES = {
   },
   tip103: {
     name: "TIP103",
-    head: "Tiggerified",
-    sub: "Problem 3. Your function strips the letters out of Tigger's name.",
-    label: "What does tiggerfy(\"eggplant\") return?",
-    hint: "Run it and copy what comes back.",
+    head: "I counted the bounces",
+    sub: "Version 1, Problem 2. Tigger starts at 1, and every bouncy or flouncy adds one.",
+    label: "Run your function on the list below. What does final_value_after_operations() return?",
+    hint: "[\"flouncy\", \"bouncy\", \"bouncy\", \"trouncy\", \"bouncy\", \"bouncy\"]",
     device: { kind:"terminal", addr:"python", prompt:"$ python3 main.py", render:"mono" },
     placeholder: "what your function returns",
-    /* 'eggplant' is deliberate: verified order-independent across all 24
-       removal orders, unlike inputs where stripping one letter creates a
-       new gg or er match. */
-    gate: { answer:"eplan", nudge:"Strip t, i, gg and er, ignoring case. Watch what happens to the double g." },
+    /* Moved off tiggerfy. That problem strips t, i, gg and er, and two
+       reasonable implementations can disagree on inputs where removing one
+       match creates another, which would reject correct work once we stop
+       using the published example. This one has a single correct answer for
+       any list. Published examples are 2 and 4, so 5 is not on the page. */
+    gate: { answer:"5", nudge:"Tigger starts at 1, not 0. Count bouncy and flouncy up, trouncy and pouncy down." },
     madlib: {
       frame: ["I ", 0, " ", 2, " ", 1, "."],
       slots: [
