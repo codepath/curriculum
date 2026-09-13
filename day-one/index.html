@@ -477,29 +477,26 @@ const HELP_LINKS = [
 const COURSES = {
   web101: {
     name: "WEB101",
-    head: "My page looks like this",
-    sub: "You rewrote a live website. Type the header you put there.",
-    label: "What does the header say now?",
-    hint: "The heading you changed, exactly as it reads on screen.",
-    device: { kind:"browser", addr:"twitch.tv/directory", render:"title", sub:"You changed this. On the real internet." },
-    placeholder: "the header you set",
-    variants: {
-      label: "Which site did you work on?",
-      options: [
-        { id:"twitch", label:"Twitch", addr:"twitch.tv/directory",
-          gate:{ answer:"Trending Now", nudge:"Check the h1 you edited on the Twitch directory page." },
-          placeholder:"the header you set" },
-        { id:"etsy", label:"Etsy", addr:"etsy.com/c/home-and-living",
-          gate:{ answer:"Home Decor", nudge:"Check the header you edited on the Etsy page." },
-          placeholder:"the header you set" },
-        { id:"reddit", label:"Reddit", addr:"reddit.com/r/computerscience",
-          gate:{ answer:"CompSci", nudge:"Check the header you edited on the r/computerscience page." },
-          placeholder:"the header you set" },
-        { id:"own", label:"I picked my own site", addr:"your site",
-          gate:null, placeholder:"your new header" }
-      ]
-    },
-    gate: null,
+    head: "I bent a real website",
+    sub: "Activity 1. You spent the session restyling a live site, so here is one more edit.",
+    label: "Set the page background to rebeccapurple, then open the Computed tab. What does background-color show?",
+    hint: "DevTools turns the colour name into numbers. Copy what it shows.",
+    device: { kind:"browser", addr:"your site", render:"title", sub:"You changed this. On the real internet." },
+    placeholder: "what the Computed tab shows",
+    /* The old gate asked for the header the student set, which the activity
+       prints verbatim as a checklist instruction, so it was copyable without
+       opening a browser. It also fired at the last checkpoint of three, could
+       not be answered at all by the "I picked my own site" branch, and was
+       ambiguous because each tutorial renames the tab title and the h1 to
+       different strings.
+
+       A named colour resolves to a fixed rgb triple by CSS spec, so this is
+       identical in every browser and on any site, which retires the variants
+       entirely. rebeccapurple appears nowhere in web101. Both the full value
+       and the bare numbers are accepted, because DevTools shows the former
+       and students often retype the latter. */
+    gate: { answer:["rgb(102, 51, 153)", "102 51 153"],
+            nudge:"Check you set it on the page background and read the Computed tab, not the Styles tab." },
     madlib: {
       frame: ["I ", 0, " the ", 1, "."],
       slots: [
@@ -510,13 +507,23 @@ const COURSES = {
   },
   web102: {
     name: "WEB102",
-    head: "My component is rendering",
-    sub: "Checkpoint 2. You built the Calendar component and App is rendering it.",
-    label: "What test message shows on the page?",
-    hint: "The placeholder text your Calendar component renders.",
+    head: "My app is running",
+    sub: "Checkpoint 0. Your Vite starter page is up on localhost.",
+    label: "Click the starter page's counter button three times. What does the button say?",
+    hint: "Read it straight off the button.",
     device: { kind:"browser", addr:"localhost:5173", render:"title", sub:"Running on your machine, right now." },
-    placeholder: "the test message",
-    gate: { answer:"Testing the calendar", nudge:"Not that. Check what your Calendar component returns, and that App.jsx is rendering it." },
+    placeholder: "what the button says",
+    /* The old gate expected "Testing the calendar", which is what lab_1.md:203
+       claims students will see. The lab actually tells them to render "Testing
+       the calendar component" at :200 and :227, so a student reading their own
+       browser was REJECTED while one skimming the checkpoint line passed
+       without building anything. Line 203 is a curriculum bug, reported.
+
+       This moves to Checkpoint 0, which is both earlier and unpublished: the
+       counter label appears nowhere in web102. It also catches the students
+       actually stranded on day one, the ones stuck on Node or the Windows
+       execution-policy blocker, rather than passing them through. */
+    gate: { answer:"count is 3", nudge:"Click the counter three times and read the button label." },
     madlib: {
       frame: ["I ", 0, " ", 2, " ", 1, "."],
       slots: [
@@ -529,12 +536,16 @@ const COURSES = {
   web103: {
     name: "WEB103",
     head: "My server is answering",
-    sub: "Checkpoint 2. You started the server and it responded.",
-    label: "What does the browser show?",
-    hint: "The text your server sends back at the root route.",
+    sub: "Checkpoint 2. Your server is up and answering.",
+    label: "With your server running, open localhost:3001/gifts, a route you have not built yet. What does the page say?",
+    hint: "Express answers for you when no route matches. Copy the whole line.",
     device: { kind:"terminal", addr:"server", prompt:"$ node index.js", render:"mono" },
-    placeholder: "what the browser shows",
-    gate: { answer:"UnEarthed API", nudge:"That's not what the root route returns yet. Check that your server is running and refresh." },
+    placeholder: "the line on the page",
+    /* "UnEarthed API" is printed verbatim at lab_1.md:229, :271 and :286, so it
+       was typeable without installing Node. Express generates this 404 itself;
+       "Cannot GET" appears nowhere in web103, and producing it requires a real
+       server listening on the right port. */
+    gate: { answer:"Cannot GET /gifts", nudge:"That's not what the root route returns yet. Check that your server is running and refresh." },
     madlib: {
       frame: ["I ", 0, " ", 2, " ", 1, "."],
       slots: [
@@ -569,12 +580,17 @@ const COURSES = {
   cyb102: {
     name: "CYB102",
     head: "I found them",
-    sub: "Exercise 1. The SMTP packet gives up the rogue user's address.",
-    label: "What's the source IP address?",
-    hint: "From the filtered packet in Wireshark.",
-    device: { kind:"panel", addr:"Wireshark — smtp contains \"FROM\"", render:"row", key:"Source" },
+    sub: "Exercise 1. Your filter isolates a single packet, and it gives up more than the sender.",
+    label: "In that one filtered packet, what is the destination IP address?",
+    hint: "Same row as the source address you were reading.",
+    device: { kind:"panel", addr:"Wireshark — smtp contains \"FROM\"", render:"row", key:"Destination" },
     placeholder: "0.0.0.0",
-    gate: { answer:"10.10.1.4", nudge:"Not that one. Filter on smtp contains \"FROM\" and check the source column." },
+    /* The source IP is printed in the lab prose at lab_1.md:118, :128 and :156,
+       so the old gate could be answered without opening Wireshark. The lab is a
+       guided walkthrough, not a puzzle, so every prose answer leaks the same
+       way. The destination sits in the same row and appears nowhere in the
+       curriculum; verified against the capture itself. */
+    gate: { answer:"74.53.140.153", nudge:"That is the sender. Read the destination column of the same packet." },
     madlib: {
       frame: ["I ", 0, " the ", 1, "."],
       slots: [
@@ -587,11 +603,21 @@ const COURSES = {
     name: "AI110",
     head: "Search works now",
     sub: "Part 1. You fixed search_songs, so partial matches finally land.",
-    label: "Search the artist field for AC. What comes back?",
-    hint: "The artist your fix makes findable.",
-    device: { kind:"browser", addr:"localhost:8501", render:"row", key:"Search “AC”" },
-    placeholder: "the artist",
-    gate: { answer:"AC/DC", nudge:"Still nothing? Look at the match condition in search_songs. Check which side of the comparison each value is on." },
+    label: "In the Hype playlist, search the artist box for mau. What song title comes back?",
+    hint: "The title, not the artist.",
+    device: { kind:"browser", addr:"localhost:8501", render:"row", key:"Hype · search “mau”" },
+    placeholder: "the song title",
+    /* AC/DC is printed four times in the student's own tinker, at :58, :123,
+       :152 and :161, including inside the instruction that asks for it. This
+       search only returns once the same fix is made, and the seeded track is
+       absent from the whole ai110 tree. Asking for the title rather than the
+       artist also removes the AC/DC vs ACDC spelling problem and the
+       title-vs-artist ambiguity in how results are rendered.
+
+       The Hype tab is deliberate: this track classifies into Hype both before
+       and after the other seeded bugs are fixed, so tab membership cannot
+       shift under the student mid-lab. */
+    gate: { answer:"Strobe", nudge:"Name the tab is Hype and search the artist box. If nothing returns, look at which side of the match condition each value is on." },
     madlib: {
       frame: ["I ", 0, " ", 2, " ", 1, "."],
       slots: [
@@ -669,14 +695,18 @@ const COURSES = {
   },
   ai201: {
     name: "AI201",
-    placeholderCourse: true,
-    head: "PLACEHOLDER",
-    sub: "Awaiting the v2 week-1 moment.",
-    label: "PLACEHOLDER",
-    hint: "",
-    device: { kind:"terminal", addr:"placeholder", prompt:"$", render:"mono" },
-    placeholder: "",
-    gate: null,
+    head: "My pipeline is chunking",
+    sub: "Milestone 1. Your ingest pipeline runs end to end.",
+    label: "Run python app.py --corpus advice_threads chunks -n 1. How many chunks total?",
+    hint: "The flag goes before the subcommand. Just the number.",
+    device: { kind:"terminal", addr:"python", prompt:"$ python3 app.py", render:"mono" },
+    placeholder: "the number it reports",
+    /* Chosen because it needs no API key and no model download, so it works for
+       a student whose setup is only half finished. The curriculum publishes the
+       counts for campus_life and city_guides, so those are readable off the
+       page; advice_threads is not. Ask this BEFORE Milestone 3, where students
+       replace the chunker and the count legitimately changes. */
+    gate: { answer:"26", nudge:"Check the flag order: --corpus comes before the subcommand. Read the number before the words chunks total." },
     madlib: { frame:["I ",0," ",2," ",1,"."],
               slots:[["built","shipped","wrote","wired up"],
                      ["system","pipeline","agent","feature"],
@@ -684,14 +714,22 @@ const COURSES = {
   },
   ai301: {
     name: "AI301",
-    placeholderCourse: true,
-    head: "PLACEHOLDER",
-    sub: "Awaiting the v2 week-1 moment.",
-    label: "PLACEHOLDER",
-    hint: "",
-    device: { kind:"terminal", addr:"placeholder", prompt:"$", render:"mono" },
-    placeholder: "",
-    gate: null,
+    head: "I read the bundles",
+    sub: "Phase 1. The four frozen calibration bundles, before anyone touches a live issue.",
+    label: "Exactly one of the four bundles names an assignee in its repo facts. What is that GitHub handle?",
+    hint: "The other three all read none.",
+    device: { kind:"panel", addr:"eval/issues — calibration bundles", render:"row", key:"assignees" },
+    placeholder: "the handle",
+    /* The bundles are frozen snapshots, so every student reads the same values,
+       and the activity explicitly tells them not to open the live issue. Picked
+       over "which bundle is the trap" because the gold labels are student
+       visible by design, and the same bundle is the trap in units 2, 3 and 4,
+       which would make it a guessable convention.
+
+       Honest limit: AI301's day one is in-class reading, so this proves
+       attendance rather than a working environment. The clone and install are
+       homework, and the eval harness costs real money to run. */
+    gate: { answer:"amh1k", nudge:"Three of the bundles read none. Open each one's repo facts and find the one that does not." },
     madlib: { frame:["I ",0," ",2," ",1,"."],
               slots:[["built","shipped","wrote","wired up"],
                      ["system","pipeline","agent","feature"],
@@ -710,11 +748,13 @@ const COURSES = {
       : [[c.placeholder, c.gate]];
     pairs.forEach(([ph, g]) => {
       if (!g || !ph) return;
-      const target = g.answer || g.mustStartWith;
-      if (!target) return;
-      const a = String(ph).toLowerCase().trim();
-      const b = String(target).toLowerCase().trim();
-      if (a === b || a.startsWith(b) || b.startsWith(a)) leaks.push(k + ": “" + ph + "”");
+      const targets = g.mustStartWith ? [g.mustStartWith]
+                    : (Array.isArray(g.answer) ? g.answer : [g.answer]);
+      targets.filter(Boolean).forEach(target => {
+        const a = String(ph).toLowerCase().trim();
+        const b = String(target).toLowerCase().trim();
+        if (a === b || a.startsWith(b) || b.startsWith(a)) leaks.push(k + ": “" + ph + "”");
+      });
     });
   });
   if (leaks.length) console.warn("[day-one] placeholder leaks the gate answer —", leaks);
@@ -987,7 +1027,8 @@ function checkGate(){
   if (!g) return true;
   const v = normalize(state.answer);
   if (g.mustStartWith) return v.startsWith(normalize(g.mustStartWith));
-  return v === normalize(g.answer);
+  const accepted = Array.isArray(g.answer) ? g.answer : [g.answer];
+  return accepted.some(a => v === normalize(a));
 }
 
 $("didIt").addEventListener("click", () => {
