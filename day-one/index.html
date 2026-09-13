@@ -396,11 +396,6 @@
 
       <div>
         <div class="fieldblock">
-          <label class="fl">Layout</label>
-          <div class="chips" id="layoutChips"></div>
-        </div>
-
-        <div class="fieldblock">
           <div class="fieldrow">
             <div>
               <label class="fl" for="stuName">Name</label>
@@ -782,11 +777,14 @@ const FACE = { x0:0.31, y0:0.17, x1:0.70, y1:1.0 };
 
 /* Only three regions survive a real Zoom frame: the column left of the
    speaker, the column right of them, and the strip above their head. */
-const LAYOUTS = [
-  { id:"left",  label:"Left column" },
-  { id:"top",   label:"Top strip" },
-  { id:"right", label:"Right column" }
-];
+/* One composition, deliberately: the name rides high on the left and the
+   stamp sits low on the right, so the eye travels name -> stamp on a
+   diagonal instead of reading them as two equal weights at the same height.
+   NAME_MID and STAMP_MID are that diagonal; STAMP_MID is floored by the
+   wordmark and the course line at the bottom of the frame. */
+const LAYOUTS = [{ id:"left", label:"Left column" }];
+const NAME_MID  = 365;
+const STAMP_MID = 665;
 
 /* ============================================================
    STATE
@@ -1112,7 +1110,6 @@ function buildToggle(host, items, onPick, labelOf, styleOf){
   });
 }
 
-buildToggle($("layoutChips"), LAYOUTS, l => state.layout = l, l => l.label);
 buildToggle($("swatches"), THEMES, t => state.theme = t, null,
             t => "linear-gradient(135deg," + t.a + "," + t.b + ")");
 buildToggle($("foilChips"), FOILS, f => state.foil = f, f => f.label);
@@ -1151,12 +1148,11 @@ function drawBackground(){
   ctx.fillStyle = bar;
   ctx.fillRect(0,0,W,14);
 
-  ({ left:drawLeft, top:drawTop, right:drawRight })[state.layout.id]();
+  drawLeft();
   drawChrome();
 
-  /* Opposite the content, and outside FACE on whichever side it lands. */
-  const onLeft = state.layout.id === "right";
-  placeStamp(W * (onLeft ? 0.155 : 0.845), H * 0.44, W * 0.105);
+  /* Low and right, opposite the name, and clear of FACE. */
+  placeStamp(W * 0.845, STAMP_MID, W * 0.105);
 }
 
 /* --- layout: left / right column --- */
@@ -1188,7 +1184,7 @@ function drawColumn(side){
   const descBelow = Math.round((sub ? sub.px : (dHeroToPr ? 32 : hero.px)) * 0.26);
 
   const span = capAbove + dHero + dHeroToPr + dToSub + dSub + descBelow;
-  const yHero    = Math.round(499 - span / 2 + capAbove);
+  const yHero    = Math.round(NAME_MID - span / 2 + capAbove);
   const yHeroEnd = yHero + dHero;
   const yPr      = yHeroEnd + dHeroToPr;
   const ySub     = (dHeroToPr ? yPr : yHeroEnd) + dToSub;
