@@ -309,12 +309,12 @@
     </div>
   </div>
 
-  <h1>You made it to day one <span class="wave">🛬</span></h1>
-  <p class="lede">First, which class are you here for?</p>
-  <p class="lede sub2">Your course portal usually links you straight to the right page, so most of the time you will skip this step.</p>
+  <h1 id="pickHead">You made it to day one <span class="wave">🛬</span></h1>
+  <p class="lede" id="pickLede">First, which class are you here for?</p>
+  <p class="lede sub2" id="pickSub">Your course portal usually links you straight to the right page, so most of the time you will skip this step.</p>
 
   <section class="card">
-    <div class="rowhead"><p class="eyebrow">Step 1 of 3</p><h2>Which class are you here for?</h2></div>
+    <div class="rowhead"><p class="eyebrow" id="pickEyebrow">Step 1 of 3</p><h2 id="pickTitle">Which class are you here for?</h2></div>
     <div class="coursegrid" id="courseGrid"></div>
   </section>
 </div>
@@ -860,14 +860,56 @@ const STAMP_MID = 665;
    STATE
    ============================================================ */
 const params = new URLSearchParams(location.search);
-const requested = (params.get("course") || "").toLowerCase();
+const debug = params.get("debug") === "1";
 
-/* Students arrive from a portal callout that carries ?course=. The picker
-   is the fallback for a bare link, and how staff preview any course. */
+/* Each course has its own link, carrying an unguessable key. A student
+   cannot reach another course by editing the URL, and the page they land on
+   is already theirs, so nobody self-selects the wrong one.
+
+   This is deterrence, not secrecy: the page is static and the repo is public,
+   so anyone who opens the source can read every gate answer. That was always
+   true. The confirmation code, checked against enrolment, is the real
+   control; these keys just stop casual wandering between courses. */
+var SLUGS = {
+  "web101-891af5": "web101",
+  "web102-429e9a": "web102",
+  "web103-fe9b56": "web103",
+  "cyb101-64f1ff": "cyb101",
+  "cyb102-59a361": "cyb102",
+  "ai110-bbd27d":  "ai110",
+  "tip101-107d0d": "tip101",
+  "tip102-211b10": "tip102",
+  "tip103-60fe9e": "tip103",
+  "ai201-9d8742":  "ai201",
+  "ai301-883288":  "ai301"
+};
+
+var keyed = SLUGS[(params.get("k") || "").toLowerCase()] || "";
+/* ?course= stays, but only for staff previewing with ?debug=1, otherwise it
+   would hand students the back door the keys exist to close. */
+var previewed = debug ? (params.get("course") || "").toLowerCase() : "";
+const requested = keyed || previewed;
+
 if (!requested || !COURSES[requested]){
   document.getElementById("app").hidden = true;
   const picker = document.getElementById("picker");
   picker.hidden = false;
+
+  /* Without a key this is a student who lost their link, not someone choosing.
+     Showing the course list here would reopen the door the keys just closed,
+     so they get sent back to their own course page instead. */
+  if (!debug){
+    document.getElementById("pickHead").innerHTML =
+      "Open the link from your course page <span class=\"wave\">🛬</span>";
+    document.getElementById("pickLede").textContent =
+      "Your Day One check-in has its own link, and it lives on your course page next to the step you just finished.";
+    document.getElementById("pickSub").textContent =
+      "Look for the green box in this week's lab or activity. If you cannot find it, ask your instructor or a TA.";
+    document.getElementById("pickEyebrow").textContent = "Wrong door";
+    document.getElementById("pickTitle").textContent = "This link needs your course key";
+    document.getElementById("courseGrid").remove();
+    return;
+  }
   const grid = document.getElementById("courseGrid");
   /* Students see the course name. The build-state tag is a testing aid, so it
      only appears with ?debug=1. */
@@ -880,7 +922,6 @@ if (!requested || !COURSES[requested]){
     tip102:"Intermediate Technical Interview Prep",
     tip103:"Advanced Technical Interview Prep"
   };
-  const debug = params.get("debug") === "1";
   Object.keys(COURSES).forEach(k => {
     const b = document.createElement("button");
     b.className = "coursebtn";
