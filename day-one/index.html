@@ -227,6 +227,8 @@
   .sw:hover{transform:scale(1.08);}
   .sw[aria-pressed=true]{border-color:var(--navy);transform:scale(1.08);}
 
+  /* unused since the stamp replaced the custom line, kept for the per-course
+     madlib data still in COURSES below */
   .madlib{
     display:flex;flex-wrap:wrap;align-items:center;gap:8px;
     font-size:16px;color:var(--navy);line-height:2.1;
@@ -394,16 +396,6 @@
 
       <div>
         <div class="fieldblock">
-          <label class="fl">Your line <span class="optional">Optional</span></label>
-          <p class="hint">Say what you did, or leave it off entirely.</p>
-          <div class="chips" id="lineToggle" style="margin-bottom:12px">
-            <button class="chip" data-on="1" aria-pressed="true">Include a line</button>
-            <button class="chip" data-on="0" aria-pressed="false">No line</button>
-          </div>
-          <div class="madlib" id="madlib"></div>
-        </div>
-
-        <div class="fieldblock">
           <label class="fl">Layout</label>
           <div class="chips" id="layoutChips"></div>
         </div>
@@ -492,6 +484,9 @@ const HELP_LINKS = [
 
 /* Per-course content. Gate answers verified against course source
    2026-09-04 unless marked otherwise. gate:null = self-reported, no check. */
+/* NOTE: each course still carries a `madlib` block. It is DEAD DATA since
+   the stamp replaced the custom line. Kept so the wording is recoverable;
+   delete it if the line is not coming back. */
 const COURSES = {
   web101: {
     name: "WEB101",
@@ -846,7 +841,7 @@ function activePlaceholder(){ return variant ? variant.placeholder : course.plac
 const state = {
   answer:"", memberId:"", conf:"",
   feel:50, feelTouched:false,
-  slots: course.madlib.slots.map(() => 0), showLine:true, layout:LAYOUTS[0], theme:THEMES[0],
+  layout:LAYOUTS[0], theme:THEMES[0],
   foil: FOILS[0], word: WORDS[streamOf(courseKey)][0],
   name:"", pronouns:"",
   tries:0, submitted:false
@@ -1100,34 +1095,6 @@ $("toStep3").addEventListener("click", () => {
 /* ============================================================
    STEP 3 — controls
    ============================================================ */
-(function buildMadlib(){
-  const wrap = $("madlib");
-  course.madlib.frame.forEach(part => {
-    if (typeof part === "string"){
-      wrap.appendChild(document.createTextNode(part));
-      return;
-    }
-    const sel = document.createElement("select");
-    sel.setAttribute("aria-label", "word choice " + (part + 1));
-    course.madlib.slots[part].forEach((w, i) => {
-      const o = document.createElement("option");
-      o.value = String(i); o.textContent = w;
-      sel.appendChild(o);
-    });
-    sel.addEventListener("change", e => {
-      state.slots[part] = Number(e.target.value);
-      drawBackground();
-    });
-    wrap.appendChild(sel);
-  });
-})();
-
-function madlibText(){
-  return course.madlib.frame.map(p =>
-    typeof p === "string" ? p : course.madlib.slots[p][state.slots[p]]
-  ).join("");
-}
-
 function buildToggle(host, items, onPick, labelOf, styleOf){
   items.forEach((item, i) => {
     const b = document.createElement("button");
@@ -1151,16 +1118,6 @@ buildToggle($("swatches"), THEMES, t => state.theme = t, null,
 buildToggle($("foilChips"), FOILS, f => state.foil = f, f => f.label);
 buildToggle($("wordChips"), WORDS[streamOf(courseKey)].map(w => ({w})),
             o => state.word = o.w, o => o.w);
-
-$("lineToggle").addEventListener("click", e => {
-  const b = e.target.closest(".chip");
-  if (!b) return;
-  [...$("lineToggle").children].forEach(c => c.setAttribute("aria-pressed","false"));
-  b.setAttribute("aria-pressed","true");
-  state.showLine = b.dataset.on === "1";
-  $("madlib").hidden = !state.showLine;
-  drawBackground();
-});
 
 $("stuName").addEventListener("input", e => { state.name = e.target.value; drawBackground(); });
 $("stuPronouns").addEventListener("change", e => { state.pronouns = e.target.value; drawBackground(); });
@@ -1217,12 +1174,10 @@ function drawColumn(side){
 
   const nm = state.name.trim();
   const pr = state.pronouns;
-  const lineOn = state.showLine;
 
-  const hero = nm ? measureWrap(nm, maxW, 76, "700", 2)
-             : lineOn ? measureWrap(madlibText(), maxW, 56, "600", 3)
-             : null;
-  const sub  = (nm && lineOn) ? measureWrap(madlibText(), maxW, 34, "500", 3) : null;
+  /* The stamp carries the message now, so the column is just the name. */
+  const hero = nm ? measureWrap(nm, maxW, 76, "700", 2) : null;
+  const sub  = null;
   if (!hero) return;
 
   const dHero = (hero.lines.length - 1) * hero.px * LH;
@@ -1288,13 +1243,6 @@ function drawTop(){
       ctx.font = '300 30px "Poppins", sans-serif';
       ctx.fillText(state.pronouns, 110 + Math.min(nw, 900) + 22, 150);
     }
-    if (state.showLine){
-      ctx.fillStyle = hexA("#ffffff",0.88);
-      fitText(madlibText(), 1810, 150, 700, 34, "500", "right");
-    }
-  } else if (state.showLine){
-    ctx.fillStyle = "#ffffff";
-    fitText(madlibText(), 110, 150, 1200, 56, "600", "left");
   }
 }
 
