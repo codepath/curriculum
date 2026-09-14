@@ -214,8 +214,10 @@
   .help p,.nudge p{margin:0 0 10px;font-size:14px;color:var(--ink);}
   .help p:last-child,.nudge p:last-child{margin-bottom:0;}
   .help a{color:var(--violet);font-weight:500;}
+  .help li.plain{font-weight:500;}
   .help ul{margin:0;padding-left:19px;font-size:14px;}
   .help li{margin-bottom:5px;}
+  .help li .note{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:2px;}
 
   /* ---------- background studio ---------- */
   .studio{display:grid;grid-template-columns:1fr;gap:24px;}
@@ -468,6 +470,8 @@
    CONFIG
    ============================================================ */
 const SEMESTER = "Fall 2026";
+/* Slack channel naming tag, e.g. "fa26". Update alongside SEMESTER each term. */
+const SLACK_TERM_TAG = "fa26";
 
 /* Google Form wiring. Create one form with these five short-answer
    questions, then paste the entry IDs from its prefilled link. */
@@ -486,9 +490,10 @@ const FORM = {
 
 /* Help routes. PLACEHOLDER — swap in the real per-course support links. */
 const HELP_LINKS = [
-  { label: "Your course Slack channel", href: "#" },
-  { label: "Office hours schedule",     href: "#" },
-  { label: "The lab's ✅ Stuck? sections", href: "#" }
+  { label: "Your TFs and classmates" },
+  { label: "Your course Slack channel", href: "https://codepath.slack.com/",
+    note: () => "Look for the channel starting with <code>dts-" + SLACK_TERM_TAG + "-" + courseKey + "-tech-help-</code>. The number at the end matches your section." },
+  { label: "Office hours schedule",     href: "https://courses.codepath.org/courses/ai110/schedule" }
 ];
 
 /* Per-course content. Gate answers verified against course source
@@ -1248,7 +1253,12 @@ function renderHelp(z){
     ? "Being stuck on day one is common and it is not a verdict on you. Pick whichever of these is easiest right now."
     : "Plenty of people who finished this course had a rough first session. Here's where the help is.";
   $("helpLinks").innerHTML = HELP_LINKS
-    .map(l => '<li><a href="' + l.href + '" target="_blank" rel="noopener">' + l.label + "</a></li>")
+    .map(l => {
+      const note = l.note ? '<span class="note">' + l.note() + "</span>" : "";
+      return l.href
+        ? '<li><a href="' + l.href + '" target="_blank" rel="noopener">' + l.label + "</a>" + note + "</li>"
+        : '<li class="plain">' + l.label + note + "</li>";
+    })
     .join("");
 }
 
