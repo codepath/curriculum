@@ -478,6 +478,8 @@ const FORM = {
   action: "https://docs.google.com/forms/d/e/1FAIpQLSe8tacWKO6WJ4cNOcRNUFHQI4-aAGaXe6RtTi1egzhohVwvlg/formResponse",
   fields: {
     memberId: "entry.1522795206",
+    name:     "entry.1236077974",
+    pronouns: "entry.990812901",
     course:   "entry.1970541937",
     answer:   "entry.1318874775",
     feel:     "entry.1859376862",
@@ -1777,6 +1779,8 @@ function submitOnce(){
 
   const payload = {
     memberId: state.memberId,
+    name:     state.name.trim(),
+    pronouns: state.pronouns,
     course:   course.name,
     answer:   state.answer.trim(),
     feel:     String(state.feel),
