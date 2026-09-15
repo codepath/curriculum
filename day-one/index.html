@@ -473,18 +473,18 @@ const SEMESTER = "Fall 2026";
 /* Slack channel naming tag, e.g. "fa26". Update alongside SEMESTER each term. */
 const SLACK_TERM_TAG = "fa26";
 
-/* Google Form wiring. Create one form with these five short-answer
-   questions, then paste the entry IDs from its prefilled link. */
+/* Google Form wiring. Responses land in the Sheet behind this form. */
 const FORM = {
-  action: "",
+  action: "https://docs.google.com/forms/d/e/1FAIpQLSe8tacWKO6WJ4cNOcRNUFHQI4-aAGaXe6RtTi1egzhohVwvlg/formResponse",
   fields: {
-    memberId: "entry.0000000001",
-    course:   "entry.0000000002",
-    answer:   "entry.0000000003",
-    feel:     "entry.0000000004",
-    conf:     "entry.0000000005",
-    word:     "entry.0000000006",
-    foil:     "entry.0000000007"
+    memberId: "entry.1522795206",
+    course:   "entry.1970541937",
+    answer:   "entry.1318874775",
+    feel:     "entry.1859376862",
+    feelZone: "entry.1129861960",
+    conf:     "entry.550060241",
+    word:     "entry.1847365122",
+    foil:     "entry.1112478314"
   }
 };
 
@@ -1780,6 +1780,7 @@ function submitOnce(){
     course:   course.name,
     answer:   state.answer.trim(),
     feel:     String(state.feel),
+    feelZone: zoneFor(state.feel).key,
     conf:     state.conf,
     word:     state.word,
     foil:     state.foil.id
